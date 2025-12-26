@@ -1,42 +1,47 @@
-# Core Vision
+# Savora 💎
 
-## Overview
-Core Vision is a calm, local-first reflection application built with Flutter. It is designed to be a private digital sanctuary, free from engagement algorithms, cloud tracking, and the pressure of "productivity."
+**Savora** is a premium, local-first financial workspace designed to bridge the gap between raw capital and emotional intent. It transforms financial tracking into a focused moment of self-awareness, replacing mindless logging with intentional reflection.
 
-The application follows strict "**Calm Tech**" principles: silence is preferred over noise, data belongs to the user, and the interface recedes when not in use.
+---
 
-## Philosophy
-- **Local-First**: All data is stored on your device. Nothing leaves your phone.
-- **Calm by Default**: No notifications, no streaks, no "overdue" tasks.
-- **Pattern, Not Prescription**: The app observes patterns in your reflections but never judges or prescribes fixes.
+### 🧠 What Savora Does
+* **Emotional Mapping**: Locks your current mood (e.g., Stressed, Calm, Anxious) to every financial event to uncover psychological spending drivers.
+* **Behavioral Insights**: AI-powered pattern analysis that adapts its communication style to your preference—Supportive, Analytical, or Neutral.
+* **Visual Velocity**: Tracks the "speed" of your spending through high-fidelity curve visualizations and net flow metrics.
+* **The Forge**: A gamified growth center that monitors your progress in Discipline, Consistency, and Awareness.
 
-## Features
-- **Daily Stream**: A chronological timeline of your reflections.
-- **Reflection Entry**: Quickly capture your mood, context, amount (if applicable), and notes.
-- **Pattern View**: Gentle, qualitative observations of your habits (e.g., "Often noted late at night"). No graphs, no scores.
-- **Monthly Intent**: A single, focused word or phrase for the month.
-- **Context Archive**: A neutral collection of the places and moods you've experienced.
-- **Quiet Space**: A minimal screen for unguided contemplation.
-- **Data Transparency**: Full access to see every byte of data stored, with one-tap deletion.
+---
 
-## Architecture
-Built with Flutter, ensuring cross-platform stability and a high-performance native feel.
+### 📱 Download APK
+👉 [**Download Savora v1.2.0 (Android APK)**](https://github.com/isitanand/savora-app/releases)
 
-- **State Management**: Local `setState` for simplicity and calmness (minimal reactive churn).
-- **Data Layer**: Repository Pattern (`RepositoryInterface` -> `LocalFileRepository`).
-- **Persistence**: JSON-based local storage in the application's document directory.
-- **Theme**: Custom `CoreTheme` system enforcing a specific visual language ("Quiet Backgrounds", "Matte Surfaces").
+*Install directly on Android devices. No accounts, no backends—your financial data stays 100% local and private.*
 
-## Getting Started
-1. **Prerequisites**: Flutter SDK installed.
-2. **Setup**:
-   ```bash
-   flutter pub get
-   ```
-3. **Run**:
-   ```bash
-   flutter run
-   ```
+---
 
-## Privacy Pledge
-Core Vision contains no analytics SDKs. It creates no network connections. It has no "cloud backup." Your data exists only where you can see it: on your device, in a clear JSON format.
+### ✨ Key Features
+* **Daily Ledger**: A streamlined view of recent transactions integrated with mood and category icons.
+* **Visual Trace**: Detailed deep-dives into single transactions, featuring "The Reflection" for captured thoughts.
+* **The Vault & Favors**: Specialized workspaces for long-term historical records and social ledger tracking.
+* **Biometric Security**: Secure app access on launch using native device biometric authentication.
+
+---
+
+### 🛠️ Architecture & Tech
+Built with **Flutter**, ensuring a high-performance native feel and cross-platform stability.
+
+* **UI Design**: Premium "Soft-Glass" aesthetic utilizing BackdropFilters (Sigma 25.0) and custom LinearGradients.
+* **Data Layer**: Repository Pattern (RepositoryInterface -> LocalFileRepository) for clean data management.
+* **Persistence**: JSON-based local storage within the application's document directory—no cloud tracking.
+
+---
+
+### 🔒 Privacy
+* **No Forced Accounts**: Use the app immediately without signing up.
+* **On-Device Data**: Every byte of your financial information remains on your phone.
+* **Data Sovereignty**: Full access to export or delete all stored data with a single tap.
+
+---
+
+### 👤 Author
+**Anand Choubey**
