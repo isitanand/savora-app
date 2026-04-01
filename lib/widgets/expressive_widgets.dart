@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Haptics
+import 'package:flutter/services.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
 import '../theme/core_theme.dart';
-import '../data/settings_service.dart'; // Settings Service
+import '../data/settings_service.dart'; 
 import 'dart:ui' as ui;
 import '../theme/core_theme.dart';
 
@@ -59,23 +59,23 @@ class GradientButton extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-             Color(0xFFEC4899), // Pink top
-             Color(0xFF8B5CF6), // Purple bottom
+             Color(0xFFEC4899), 
+             Color(0xFF8B5CF6), 
           ],
         ),
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
-          // MANDATE: Deep Purple Spread
+          
           BoxShadow(
-            color: Color(0xFF8B5CF6).withOpacity(0.5), // Increased opacity for depth
+            color: Color(0xFF8B5CF6).withOpacity(0.5), 
             blurRadius: 16.0,
             offset: Offset(0, 6),
           ),
-          // MANDATE: Inner White Lip Simulation (via top white shadow/border effect)
+          
           BoxShadow(
              color: Colors.white.withOpacity(0.25),
              blurRadius: 1.0, 
-             offset: Offset(0, -1), // Top lip
+             offset: Offset(0, -1), 
              spreadRadius: 0.5,
           )
         ],
@@ -97,8 +97,8 @@ class GradientButton extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(1.0), // Mandate: 100% opacity
-                    fontWeight: FontWeight.w800, // Mandate: w800
+                    color: Colors.white.withOpacity(1.0), 
+                    fontWeight: FontWeight.w800, 
                     fontSize: 16,
                   ),
                 ),
@@ -117,7 +117,7 @@ class MoodAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Generate a consistent color based on string hash for visual variety
+    
     final safeMood = mood.isEmpty ? '?' : mood;
     final color = _getColor(safeMood);
     
@@ -178,24 +178,24 @@ class _InsightGraphState extends State<InsightGraph> {
   Offset? _tapPosition;
 
   void _handleTap(TapUpDetails details, double width) {
-    // Logic matches CustomPainter: leftMargin = 30
+    
     const double leftMargin = 30.0;
     final double drawingWidth = width - leftMargin;
     
     if (details.localPosition.dx < leftMargin) return;
 
-    // Fixed 30 days for Monthly
+    
     final int totalPoints = widget.isMonthly ? 30 : (widget.data.length > 0 ? widget.data.length : 1);
     final double widthStep = drawingWidth / totalPoints;
 
     int index = ((details.localPosition.dx - leftMargin) / widthStep).round();
     
-    // Clamp
+    
     if (index < 0) index = 0;
     if (index >= totalPoints) index = totalPoints - 1;
     
-    // Mandate: "Stick to current date" if tapping future
-    // Strict enforcement: Snap to today if index > today
+    
+    
     int safeToday = widget.todayIndex ?? (DateTime.now().day - 1);
     
     if (index > safeToday) {
@@ -207,9 +207,9 @@ class _InsightGraphState extends State<InsightGraph> {
       _tapPosition = details.localPosition;
     });
 
-    // Auto-hide after 3 seconds
+    
     Future.delayed(Duration(seconds: 3), () {
-      if (mounted && _tappedIndex == index) { // Check if still same interaction
+      if (mounted && _tappedIndex == index) { 
         setState(() { _tappedIndex = null; });
       }
     });
@@ -234,11 +234,11 @@ class _InsightGraphState extends State<InsightGraph> {
                     targetLimit: widget.targetLimit,
                     todayIndex: widget.todayIndex,
                     isMonthly: widget.isMonthly,
-                    highlightIndex: _tappedIndex, // Pass to painter for glow effect
+                    highlightIndex: _tappedIndex, 
                   ),
                 ),
               ),
-              // Premium Glass Tooltip
+              
               if (_tappedIndex != null)
                 _buildTooltip(constraints.maxWidth),
             ],
@@ -249,47 +249,47 @@ class _InsightGraphState extends State<InsightGraph> {
   }
 
   Widget _buildTooltip(double width) {
-    // Calculate Position
+    
     const double leftMargin = 30.0;
     final double drawingWidth = width - leftMargin;
-    final double widthStep = drawingWidth / 30; // Assuming monthly
+    final double widthStep = drawingWidth / 30; 
     final double x = leftMargin + (_tappedIndex! * widthStep);
     
-    // Calculate Value for Display
+    
     double value = 0.0;
-    // Cumulative Sum logic
-    // We need to sum up to _tappedIndex
+    
+    
     if (widget.data.isNotEmpty) {
       int limit = _tappedIndex! < widget.data.length ? _tappedIndex! : widget.data.length - 1;
-      // If tapped index is active (has data), sum it.
-      // If tapped index is future (no data yet), we technically show last known sum or 0? 
-      // Let's show cumulative up to that day (which is constant if no new spending).
       
-      // Wait, if I tap Day 30 and today is Day 24, should I show Day 24's total? 
-      // Yes, cumulative graph is flat.
       
-      // Safe clamp
+      
+      
+      
+      
+      
+      
       int loopLimit = _tappedIndex! >= widget.data.length ? widget.data.length - 1 : _tappedIndex!;
       for (int i=0; i<=loopLimit; i++) value += widget.data[i];
     }
 
-    // Dynamic Left Position (centered on node)
-    // Ensure doesn't overflow screen edges
-    double leftPos = x - 60; // Center 120px wide tooltip
+    
+    
+    double leftPos = x - 60; 
     if (leftPos < 0) leftPos = 10;
     if (leftPos + 120 > width) leftPos = width - 130;
 
     return Positioned(
-      top: 10, // Fixed at top for clarity, or follow Y? User asked for "Clear Position". Top is clear.
+      top: 10, 
       left: leftPos,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9), // Glass
+          color: Colors.white.withOpacity(0.9), 
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF8B5CF6).withOpacity(0.2), // Purple shadow
+              color: Color(0xFF8B5CF6).withOpacity(0.2), 
               blurRadius: 16,
               offset: Offset(0, 8),
             ),
@@ -313,7 +313,7 @@ class _InsightGraphState extends State<InsightGraph> {
               style: GoogleFonts.plusJakartaSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFFEC4899), // Pink Text
+                color: Color(0xFFEC4899), 
               ),
             ),
           ],
@@ -344,7 +344,7 @@ class _VelocityChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (data.isEmpty) return;
 
-    // Margins for Axis Labels
+    
     const double bottomMargin = 20.0;
     const double leftMargin = 30.0;
     
@@ -355,14 +355,14 @@ class _VelocityChartPainter extends CustomPainter {
       size.height - bottomMargin
     );
 
-    // Draw Axis Labels first
+    
     _drawAxisLabels(canvas, size, leftMargin, bottomMargin);
 
-    // Mandate: Strict Scaling (maxY = targetLimit as set by user)
-    // If targetLimit is null/0, default to 4000 or max data to avoid crash
+    
+    
     final double maxVal = (targetLimit != null && targetLimit! > 0) ? targetLimit! : 4000.0;
     
-    // CUMULATIVE LOGIC: Convert data to cumulative sums
+    
     final List<double> cumulativeData = [];
     double runningTotal = 0.0;
     for (int i = 0; i < data.length; i++) {
@@ -370,18 +370,18 @@ class _VelocityChartPainter extends CustomPainter {
       cumulativeData.add(runningTotal);
     }
     
-    // TEMPORAL FIX: Show entire month context starting from Day 1
+    
     const int startIndex = 0; 
     
-    // TEMPORAL FIX: Clip at current day (todayIndex)
+    
     final int endIndex = todayIndex != null && todayIndex! < cumulativeData.length ? todayIndex! : cumulativeData.length - 1;
     
     final widthStep = drawingRect.width / (isMonthly ? 30 : cumulativeData.length - 1);
 
-    // 1. Target Line Removed per user request
+    
 
 
-    // 2. Draw Today Indicator
+    
     if (todayIndex != null) {
       final todayX = drawingRect.left + (todayIndex! * widthStep);
       final todayPaint = Paint()
@@ -390,12 +390,12 @@ class _VelocityChartPainter extends CustomPainter {
       canvas.drawLine(Offset(todayX, drawingRect.top), Offset(todayX, drawingRect.bottom), todayPaint);
     }
 
-    // 3. Draw Cumulative Line - VIBRANT 3PX WITH NEON GLOW
+    
     final actualPath = Path();
     
     for (int i = startIndex; i <= endIndex; i++) {
       final x = drawingRect.left + (i * widthStep);
-      // Ensure we don't divide by zero or negative
+      
       final safeMaxVal = maxVal <= 0 ? 1.0 : maxVal;
       final val = cumulativeData[i];
       final y = drawingRect.bottom - (val / safeMaxVal * drawingRect.height);
@@ -407,36 +407,36 @@ class _VelocityChartPainter extends CustomPainter {
       }
     }
 
-    // Mandate: Solid Vibrant Pink Line (No Blur)
+    
     final linePaint = Paint()
-      ..color = Color(0xFFEC4899) // Vibrant Pink
-      ..strokeWidth = 3.0 // Mandate: 3px thick
+      ..color = Color(0xFFEC4899) 
+      ..strokeWidth = 3.0 
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     canvas.drawPath(actualPath, linePaint);
     
-    // 4. Draw Glowing Node at Current Day (End of Line)
+    
     if (endIndex >= startIndex && endIndex < cumulativeData.length) {
       final lastX = drawingRect.left + (endIndex * widthStep);
       final lastVal = cumulativeData[endIndex];
       final lastY = drawingRect.bottom - (lastVal / (maxVal <= 0 ? 1.0 : maxVal) * drawingRect.height);
       
-      // Glow Shadow
+      
       canvas.drawCircle(
         Offset(lastX, lastY),
         8.0, 
         Paint()..color = Color(0xFFEC4899).withOpacity(0.4)..maskFilter = MaskFilter.blur(BlurStyle.normal, 4)
       );
       
-      // White Center
+      
       canvas.drawCircle(
         Offset(lastX, lastY), 
         4.0, 
         Paint()..color = Colors.white
       );
       
-      // Ring
+      
       canvas.drawCircle(
         Offset(lastX, lastY), 
         4.0, 
@@ -444,11 +444,11 @@ class _VelocityChartPainter extends CustomPainter {
       );
     }
 
-    // 5. Draw INTERACTIVE Highlight Node
+    
     if (highlightIndex != null) {
-      // Logic: If tapped index is active data range, snap to node.
-      // If tapped index is future (no data), snap to end of line or don't show node?
-      // User tapped there, let's show node at closest point on line.
+      
+      
+      
       
       int effectiveIdx = highlightIndex!;
       if (effectiveIdx > endIndex) effectiveIdx = endIndex; 
@@ -461,7 +461,7 @@ class _VelocityChartPainter extends CustomPainter {
          final safeMaxVal = maxVal <= 0 ? 1.0 : maxVal;
          final highlightY = drawingRect.bottom - (highlightVal / safeMaxVal * drawingRect.height);
 
-         // Stronger Interaction Glow
+         
          canvas.drawCircle(
            Offset(highlightX, highlightY),
            12.0, 
@@ -486,37 +486,37 @@ class _VelocityChartPainter extends CustomPainter {
   void _drawAxisLabels(Canvas canvas, Size size, double leftMargin, double bottomMargin) {
      final textStyle = GoogleFonts.plusJakartaSans(
        fontSize: 10,
-       color: Color(0xFF2A2A2A).withOpacity(0.5), // Mandate: 0.5 opacity per user request (was 0.4/1.0)
+       color: Color(0xFF2A2A2A).withOpacity(0.5), 
        fontWeight: FontWeight.w600, 
      );
 
-     // X-Axis (Days: 1, 5, 10, 15, 20, 25, 30)
+     
      final xIntervals = [1, 5, 10, 15, 20, 25, 30];
      final drawingWidth = size.width - leftMargin;
      final widthStep = drawingWidth / 30;
 
      for (var day in xIntervals) {
-       final x = leftMargin + ((day - 1) * widthStep); // data index is day-1
+       final x = leftMargin + ((day - 1) * widthStep); 
        final textSpan = TextSpan(text: '$day', style: textStyle);
        final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
        textPainter.layout();
        textPainter.paint(canvas, Offset(x - (textPainter.width / 2), size.height - 15));
      }
 
-     // Y-Axis (Strict Labels: 0, Limit/2, Limit) - MANDATE: Ensure top label is visible
+     
      final double maxVal = targetLimit ?? (data.isEmpty ? 100 : data.reduce((a, b) => a > b ? a : b));
      final yValues = [0, maxVal / 2, maxVal];
-     final drawingHeight = size.height - bottomMargin - 20; // MANDATE: 20px top padding for "4k" visibility
+     final drawingHeight = size.height - bottomMargin - 20; 
     
     for (var val in yValues) {
-      final y = 20 + (drawingHeight - (val / maxVal * drawingHeight)); // MANDATE: Start 20px from top
+      final y = 20 + (drawingHeight - (val / maxVal * drawingHeight)); 
       
       final label = val >= 1000 ? '${(val/1000).toStringAsFixed(1)}k' : val.toStringAsFixed(0);
       final textSpan = TextSpan(text: label, style: textStyle);
       final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
       textPainter.layout();
-      // Mandate: Increased padding to prevent cutoff
-      textPainter.paint(canvas, Offset(2, y - (textPainter.height / 2))); // Added 2px left padding
+      
+      textPainter.paint(canvas, Offset(2, y - (textPainter.height / 2))); 
     }
   }
 
@@ -563,41 +563,28 @@ class WeeklyBarChart extends StatefulWidget {
 
 class _WeeklyBarChartState extends State<WeeklyBarChart> {
   int? _tappedIndex;
-
   void _handleTap(TapUpDetails details, double width) {
     const double leftMargin = 30.0;
-    // const double bottomMargin = 20.0; // Unused
-    
-    // Tap area check
     if (details.localPosition.dx < leftMargin) return;
 
     final drawingWidth = width - leftMargin;
+    const double barWidth = 16.0;
+    final double groupGap = (drawingWidth - (barWidth * 7)) / 8;
+    final double startX = leftMargin + groupGap;
+    final double step = barWidth + groupGap;
     
-    // Geometry matching Painter
-    double barWidth = 12.0; 
-    double internalGap = 4.0;
-    double singleGroupWidth = (barWidth * 2) + internalGap;
-    
-    // Calculate gap used in painter
-    double groupGap = (drawingWidth - (singleGroupWidth * 7)) / 6;
-    if (groupGap < 0) groupGap = 0;
+    final double relativeX = details.localPosition.dx - startX;
+    if (relativeX < 0) return;
 
-    // Determine Index
-    // x = i * (singleGroupWidth + groupGap)
-    // i = x / step
-    final double step = singleGroupWidth + groupGap;
-    final double relativeX = details.localPosition.dx - leftMargin;
-    
-    // Add half step tolerance to the left/right
     int index = (relativeX / step).floor();
     
-    // Clamp/Validation
-    if (index >= 0 && index < 7) {
+    final int todayIndex = DateTime.now().weekday - 1;
+
+    if (index >= 0 && index < 7 && index <= todayIndex) {
        setState(() {
          _tappedIndex = index;
        });
 
-       // Auto-hide
        Future.delayed(Duration(seconds: 3), () {
          if (mounted) setState(() { _tappedIndex = null; });
        });
@@ -606,6 +593,23 @@ class _WeeklyBarChartState extends State<WeeklyBarChart> {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate maxVal once for both painter and tooltip
+    final allValues = [...widget.thisWeek, ...widget.lastWeek];
+    final double rawMaxVal = allValues.isEmpty || allValues.every((e) => e == 0) ? 100 : allValues.reduce((a, b) => a > b ? a : b);
+    
+    double getCleanMax(double val) {
+      if (val <= 0) return 100.0;
+      if (val <= 10) return 10.0;
+      if (val <= 50) return 50.0;
+      if (val <= 100) return 100.0;
+      if (val <= 500) return ((val / 100).ceil() * 100.0);
+      if (val <= 1000) return ((val / 200).ceil() * 200.0);
+      if (val <= 5000) return ((val / 1000).ceil() * 1000.0);
+      return ((val / 1000).ceil() * 1000.0);
+    }
+    
+    final double maxVal = getCleanMax(rawMaxVal * 1.15);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -625,7 +629,7 @@ class _WeeklyBarChartState extends State<WeeklyBarChart> {
                 ),
               ),
               if (_tappedIndex != null)
-                _buildTooltip(constraints.maxWidth),
+                _buildTooltip(constraints.maxWidth, maxVal),
             ],
           ),
         );
@@ -633,33 +637,38 @@ class _WeeklyBarChartState extends State<WeeklyBarChart> {
     );
   }
 
-  Widget _buildTooltip(double width) {
-    // 1. Calculate X Position exactly like Painter
+  Widget _buildTooltip(double width, double maxVal) {
     const double leftMargin = 30.0;
-    double barWidth = 12.0; 
-    double internalGap = 4.0;
-    double singleGroupWidth = (barWidth * 2) + internalGap;
-    double groupGap = ((width - leftMargin) - (singleGroupWidth * 7)) / 6;
-    if (groupGap < 0) groupGap = 0;
+    const double barWidth = 10.0;
     
-    final double groupX = leftMargin + (_tappedIndex! * (singleGroupWidth + groupGap));
-    // Center over the RIGHT bar (This Week)
-    final double targetX = groupX + barWidth + internalGap + (barWidth / 2);
+    final double drawingWidth = width - leftMargin;
+    final double groupGap = (drawingWidth - (barWidth * 7)) / 8;
+    final double startX = leftMargin + groupGap;
     
-    // 2. Data
+    final double targetX = startX + (_tappedIndex! * (barWidth + groupGap)) + (barWidth / 2);
+    
     final double amount = widget.thisWeek[_tappedIndex!];
     final double lastAmount = widget.lastWeek[_tappedIndex!];
     final String dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][_tappedIndex!];
     
-    // 3. Tooltip Positioning
+    final int todayIndex = DateTime.now().weekday - 1;
+    if (_tappedIndex! > todayIndex) return SizedBox.shrink();
+
+    // Calculate vertical position
+    const double drawingHeight = 140.0; // 160 - 20 bottom margin
+    double barHeight = (amount / maxVal * drawingHeight);
+    if (amount == 0 && _tappedIndex == todayIndex) {
+      barHeight = 2.0;
+    }
+
     double tooltipWidth = 140;
     double leftPos = targetX - (tooltipWidth / 2);
-    // Boundary checks
+    
     if (leftPos < 0) leftPos = 10;
     if (leftPos + tooltipWidth > width) leftPos = width - tooltipWidth - 10;
 
     return Positioned(
-      top: -10, // Higher up
+      bottom: (160 - drawingHeight) + barHeight + 10, 
       left: leftPos,
       child: Container(
         width: tooltipWidth,
@@ -681,7 +690,10 @@ class _WeeklyBarChartState extends State<WeeklyBarChart> {
           children: [
             Text(dayName, style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black54)),
             SizedBox(height: 2),
-            Text("₹${amount.toStringAsFixed(0)}", style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFEC4899))),
+            if (amount == 0)
+               Text("No spend", style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black54))
+            else
+               Text("₹${amount.toStringAsFixed(0)}", style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFEC4899))),
             if (lastAmount > 0)
               Padding(
                 padding: const EdgeInsets.only(top: 2),
@@ -703,7 +715,7 @@ class _WeeklyBarPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Mandate: Add Axes for Weekly Chart
+    
     const double bottomMargin = 20.0;
     const double leftMargin = 30.0;
     
@@ -714,105 +726,102 @@ class _WeeklyBarPainter extends CustomPainter {
       size.height - bottomMargin
     );
 
-    // Mandate: Dynamic Spacing to "Spread thoroughly"
-    double barWidth = 12.0; 
-    double internalGap = 4.0; // Gap between LastWeek and ThisWeek bars within a group
     
-    // Calculate total width of a single group (Bar + Bar + Gap)
-    double singleGroupWidth = (barWidth * 2) + internalGap;
     
-    // Calculate available width for distribution
-    // We want 7 groups spread across the width
+    const double barWidth = 10.0; 
+    
     final double availableWidth = drawingRect.width;
+    double groupGap = (availableWidth - (barWidth * 7)) / 8; // Using 8 gaps for better centering
     
-    // Ensure we don't divide by zero if width is weirdly small
-    double groupGap = (availableWidth - (singleGroupWidth * 7)) / 6;
-    if (groupGap < 0) groupGap = 0; // Fallback
-    
-    // Start exactly at left edge to use full width
-    final double startX = drawingRect.left;
+    final double startX = drawingRect.left + groupGap;
 
-    _drawAxes(canvas, size, leftMargin, bottomMargin, startX, barWidth, groupGap, internalGap);
-
-    // Max Value Logic for scaling
     final allValues = [...thisWeek, ...lastWeek];
-    final double maxVal = allValues.isEmpty || allValues.every((e) => e == 0) ? 100 : allValues.reduce((a, b) => a > b ? a : b) * 1.2;
+    final double rawMaxVal = allValues.isEmpty || allValues.every((e) => e == 0) ? 100 : allValues.reduce((a, b) => a > b ? a : b);
+    
+    double getCleanMax(double val) {
+      if (val <= 0) return 100.0;
+      if (val <= 10) return 10.0;
+      if (val <= 50) return 50.0;
+      if (val <= 100) return 100.0;
+      if (val <= 500) return ((val / 100).ceil() * 100.0);
+      if (val <= 1000) return ((val / 200).ceil() * 200.0);
+      if (val <= 5000) return ((val / 1000).ceil() * 1000.0);
+      return ((val / 1000).ceil() * 1000.0);
+    }
+    
+    final double maxVal = getCleanMax(rawMaxVal * 1.15);
+
+    _drawAxes(canvas, size, leftMargin, bottomMargin, startX, barWidth, groupGap, maxVal);
+
+    final int todayIndex = DateTime.now().weekday - 1;
     
     for (int i = 0; i < 7; i++) {
-        final double x = startX + i * (singleGroupWidth + groupGap);
+        final double x = startX + i * (barWidth + groupGap);
+        bool isFuture = i > todayIndex;
+        bool isToday = i == todayIndex;
         
-        // HIGHLIGHT GLOW
-        if (highlightIndex != null && i == highlightIndex) {
-           // Draw subtle vertical highlight column
-           canvas.drawRRect(
-             RRect.fromRectAndRadius(
-               Rect.fromLTWH(x - 4, 0, singleGroupWidth + 8, drawingRect.bottom + 10),
-               Radius.circular(8)
-             ),
-             Paint()..color = Color(0xFFEC4899).withOpacity(0.05)
-           );
+        if (!isFuture) {
+           double thisWeekVal = thisWeek[i];
+           double thisY = drawingRect.bottom - (thisWeekVal / maxVal * drawingRect.height);
+           
+           final bool isSelected = highlightIndex != null && i == highlightIndex;
+           
+           // Selection logic: Increase brightness/opacity instead of layering
+           final barPaint = Paint()
+             ..color = isSelected 
+                 ? Color(0xFFEC4899) 
+                 : Color(0xFFEC4899).withOpacity(isToday ? 0.8 : 0.6);
+
+           if (thisWeekVal == 0 && isToday) {
+               thisY = drawingRect.bottom - 2.0; 
+               canvas.drawRRect(
+                 RRect.fromLTRBR(x, thisY, x + barWidth, drawingRect.bottom, Radius.circular(4)),
+                 Paint()..color = isSelected ? Color(0xFFEC4899).withOpacity(0.5) : Color(0xFFEC4899).withOpacity(0.2),
+               );
+           } else if (thisWeekVal > 0) {
+               canvas.drawRRect(
+                 RRect.fromLTRBR(x, thisY, x + barWidth, drawingRect.bottom, Radius.circular(4)),
+                 barPaint,
+               );
+           }
         }
-
-        // Last Week Bar (Violet Comparison) - LEFT
-        final double lastY = drawingRect.bottom - (lastWeek[i] / maxVal * drawingRect.height);
-        canvas.drawRRect(
-          RRect.fromLTRBR(x, lastY, x + barWidth, drawingRect.bottom, Radius.circular(4)),
-          Paint()..color = Color(0xFF8B5CF6).withOpacity(0.5), // Violet Comparison
-        );
-
-        // This Week Bar (Pink Primary) - RIGHT
-        final double thisY = drawingRect.bottom - (thisWeek[i] / maxVal * drawingRect.height);
-        canvas.drawRRect(
-          RRect.fromLTRBR(x + barWidth + internalGap, thisY, x + barWidth + internalGap + barWidth, drawingRect.bottom, Radius.circular(4)),
-          Paint()..color = Color(0xFFEC4899),
-        );
     }
   }
 
-  void _drawAxes(Canvas canvas, Size size, double leftMargin, double bottomMargin, double startX, double barWidth, double groupGap, double internalGap) {
+  void _drawAxes(Canvas canvas, Size size, double leftMargin, double bottomMargin, double startX, double barWidth, double groupGap, double maxVal) {
       final textStyle = GoogleFonts.plusJakartaSans(
        fontSize: 10, 
-       color: Color(0xFF2A2A2A).withOpacity(0.5), // Mandate: 0.5 opacity (Standardized)
-       fontWeight: FontWeight.w600, // Mandate: w600 (Standardized)
+       color: Color(0xFF2A2A2A).withOpacity(0.5), 
+       fontWeight: FontWeight.w600, 
      );
 
-     // X-Axis: M T W T F S S
      final days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-     final double singleGroupWidth = (barWidth * 2) + internalGap;
      
      for (int i = 0; i < days.length; i++) {
        final textSpan = TextSpan(text: days[i], style: textStyle);
        final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
        textPainter.layout();
        
-       // Calculate X position to align EXACTLY under the Current Week Bar (Right bar in group)
-       final double groupX = startX + i * (singleGroupWidth + groupGap);
-       
-       // Current Week Bar X start = groupX + barWidth + internalGap
-       final double currentWeekBarCenter = groupX + barWidth + internalGap + (barWidth / 2);
-       
-       // Align center of text with center of Current Week Bar
-       final x = currentWeekBarCenter - (textPainter.width / 2);
-       
+       final double barX = startX + i * (barWidth + groupGap);
+       final double centerOfBar = barX + (barWidth / 2);
+       final x = centerOfBar - (textPainter.width / 2);
        textPainter.paint(canvas, Offset(x, size.height - 15));
      }
 
-     // Y-Axis: 0, Mid, Max
-    final allValues = [...thisWeek, ...lastWeek];
-    final double maxVal = allValues.isEmpty || allValues.every((e) => e == 0) ? 100 : allValues.reduce((a, b) => a > b ? a : b);
-     
-     final yLabels = [0, maxVal / 2, maxVal];
-     final drawingHeight = size.height - bottomMargin;
-     
-     for (var val in yLabels) {
-        final y = drawingHeight - (val / (maxVal * 1.2) * drawingHeight);
-        final label = val >= 1000 ? '${(val/1000).toStringAsFixed(1)}k' : val.toStringAsFixed(0);
-        final textSpan = TextSpan(text: label, style: textStyle);
-        final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
-        textPainter.layout();
-        textPainter.paint(canvas, Offset(0, y - (textPainter.height / 2)));
+     final int steps = 4;
+     final double drawingHeight = size.height - bottomMargin;
+     for (int i = 0; i <= steps; i++) {
+       final val = (maxVal / steps) * i;
+       final y = drawingHeight - (i / steps * drawingHeight);
+       final label = val >= 1000 ? '${(val/1000).toStringAsFixed(1)}k' : val.toStringAsFixed(0);
+       final textSpan = TextSpan(text: label, style: textStyle);
+       final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+       textPainter.layout();
+       textPainter.paint(canvas, Offset(0, y - (textPainter.height / 2)));
      }
   }
+
+
 
   @override
   bool shouldRepaint(covariant _WeeklyBarPainter oldDelegate) => 
@@ -820,7 +829,7 @@ class _WeeklyBarPainter extends CustomPainter {
     oldDelegate.lastWeek != lastWeek ||
     oldDelegate.highlightIndex != highlightIndex;
 
-// End of existing file content or append at end
+
 }
 
 class UnifiedProButton extends StatefulWidget {
@@ -829,14 +838,14 @@ class UnifiedProButton extends StatefulWidget {
   final List<Color> gradientColors;
   final double? width;
   final bool isDestructive;
-  final bool isWide; // Added as requested by user build error
+  final bool isWide; 
   final bool isLoading;
 
   UnifiedProButton({
     super.key,
     required this.text,
     required this.onTap,
-    this.gradientColors = const [Color(0xFFBB86FC), Color(0xFFCF6679)], // Default Lavender-Rose
+    this.gradientColors = const [Color(0xFFBB86FC), Color(0xFFCF6679)], 
     this.width,
     this.isDestructive = false,
     this.isWide = false,
@@ -850,7 +859,7 @@ class UnifiedProButton extends StatefulWidget {
 class _UnifiedProButtonState extends State<UnifiedProButton> {
   bool _isPressed = false;
 
-  // Helper: Increase saturation by 30%
+  
   Color _increaseSaturation(Color color, double factor) {
     final hslColor = HSLColor.fromColor(color);
     return hslColor.withSaturation((hslColor.saturation * factor).clamp(0.0, 1.0)).toColor();
@@ -858,50 +867,50 @@ class _UnifiedProButtonState extends State<UnifiedProButton> {
 
   @override
   Widget build(BuildContext context) {
-    // Mandate: Appearance Mode Logic
+    
     return ValueListenableBuilder<AppearanceMode>(
       valueListenable: SettingsService().appearanceMode,
       builder: (context, mode, child) {
         final isSoft = mode == AppearanceMode.soft;
         
-        // Mandate: +30% Saturation for Soft Mode
+        
         final vibrantColors = isSoft
             ? widget.gradientColors.map((c) => _increaseSaturation(c, 1.3)).toList()
             : widget.gradientColors;
         
-        // Effective Width
+        
         final effectiveWidth = widget.isWide ? double.infinity : (widget.width ?? MediaQuery.of(context).size.width * 0.5);
 
         return GestureDetector(
           onTapDown: (_) => setState(() => _isPressed = true),
           onTapUp: (_) {
             setState(() => _isPressed = false);
-            HapticFeedback.lightImpact(); // Mandate: Feedback
+            HapticFeedback.lightImpact(); 
             if (!widget.isLoading) widget.onTap();
           },
           onTapCancel: () => setState(() => _isPressed = false),
           child: AnimatedScale(
-            scale: isSoft && _isPressed ? 0.97 : 1.0, // Mandate: Scale 0.97 for Soft
+            scale: isSoft && _isPressed ? 0.97 : 1.0, 
             duration: Duration(milliseconds: 150),
             child: AnimatedOpacity(
-              opacity: !isSoft && _isPressed ? 0.8 : 1.0, // Mandate: Opacity shift for Sharp
+              opacity: !isSoft && _isPressed ? 0.8 : 1.0, 
               duration: Duration(milliseconds: 100),
               child: Container(
-                width: effectiveWidth, // Mandate: Responsive Width
+                width: effectiveWidth, 
                 height: 60,
                 decoration: BoxDecoration(
                    borderRadius: isSoft 
-                     ? BorderRadius.circular(100) // Mandate: StadiumBorder (Pill)
-                     : BorderRadius.circular(12), // Mandate: 12px for Premium Sharp
+                     ? BorderRadius.circular(100) 
+                     : BorderRadius.circular(12), 
                    boxShadow: isSoft 
                      ? [
-                         // Mandate: Outer Drop Shadow (Deep Purple, 0.3 opacity, 12 blur, 4 offset)
+                         
                          BoxShadow(
                            color: Color(0xFF8B5CF6).withOpacity(0.3),
                            blurRadius: 12,
                            offset: Offset(0, 4),
                          ),
-                         // Mandate: Inner Shadow simulation
+                         
                          BoxShadow(
                            color: Colors.white.withOpacity(0.5),
                            blurRadius: 0,
@@ -910,25 +919,25 @@ class _UnifiedProButtonState extends State<UnifiedProButton> {
                          )
                        ]
                      : [
-                         // Mandate: Premium Tactile Sharp - Deep Violet Hard Shadow (No Border)
+                         
                          BoxShadow(
-                           color: Color(0xFF4C1D95).withOpacity(0.4), // Deep Violet, 0.4 opacity
-                           offset: Offset(0, 4), // Deeper offset for tactile feel
-                           blurRadius: 0, // Sharp
+                           color: Color(0xFF4C1D95).withOpacity(0.4), 
+                           offset: Offset(0, 4), 
+                           blurRadius: 0, 
                          )
                        ],
                     gradient: LinearGradient(
                       colors: isSoft 
                         ? [
-                            Color(0xFF8B5CF6), // Violet
-                            Color(0xFFEC4899), // Pink
-                            Colors.white.withOpacity(0.8), // Soft White end
+                            Color(0xFF8B5CF6), 
+                            Color(0xFFEC4899), 
+                            Colors.white.withOpacity(0.8), 
                           ]
                         : widget.gradientColors,
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    // Mandate: No black border for Sharp - cleaner look
+                    
                     border: isSoft ? null : null, 
                 ),
                 child: ClipRRect(
@@ -937,14 +946,14 @@ class _UnifiedProButtonState extends State<UnifiedProButton> {
                      : BorderRadius.circular(8),
                   child: BackdropFilter(
                     filter: ui.ImageFilter.blur(
-                      sigmaX: isSoft ? 12.0 : 0.0, // Mandate: sigma 12 for Soft, 0 for Sharp
+                      sigmaX: isSoft ? 12.0 : 0.0, 
                       sigmaY: isSoft ? 12.0 : 0.0
                     ),
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            vibrantColors.first.withValues(alpha: isSoft ? 0.65 : 0.95), // Mandate: 0.65 Soft (increased from 0.55)
+                            vibrantColors.first.withValues(alpha: isSoft ? 0.65 : 0.95), 
                             vibrantColors.last.withValues(alpha: isSoft ? 0.65 : 0.95),
                           ],
                           begin: Alignment.topLeft,
@@ -953,7 +962,7 @@ class _UnifiedProButtonState extends State<UnifiedProButton> {
                       ),
                       child: Stack(
                         children: [
-                          // SPECULAR SHINE OVERLAY (Soft Mode Only)
+                          
                           if (isSoft)
                             Positioned.fill(
                               child: Container(
@@ -963,24 +972,24 @@ class _UnifiedProButtonState extends State<UnifiedProButton> {
                                     begin: Alignment(-1.0, -1.0),
                                     end: Alignment(1.0, 1.0),
                                     colors: [
-                                      Colors.white.withValues(alpha: 0.2), // Mandate: White 0.2
+                                      Colors.white.withValues(alpha: 0.2), 
                                       Colors.transparent,
                                     ],
-                                    stops: [0.0, 0.5], // 45-degree shine
+                                    stops: [0.0, 0.5], 
                                   ),
                                 ),
                               ),
                             ),
                           
-                          // CONTENT (Perfectly Centered, No Icons)
+                          
                           Center(
                             child: Text(
                               widget.text,
                               style: GoogleFonts.plusJakartaSans(
                                 fontSize: 16, 
-                                fontWeight: FontWeight.w800, // Mandate: w800 for maximum legibility
-                                color: Colors.white.withOpacity(1.0), // Mandate: 1.0 opacity
-                                letterSpacing: 1.2, // Mandate: 1.2
+                                fontWeight: FontWeight.w800, 
+                                color: Colors.white.withOpacity(1.0), 
+                                letterSpacing: 1.2, 
                               ),
                             ),
                           ),

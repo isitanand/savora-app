@@ -17,7 +17,7 @@ class TheForgeScreen extends StatefulWidget {
 class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProviderStateMixin {
   late AnimationController _pulseController;
   
-  // Dynamic Metrics
+  
   double _disciplineScore = 0.0;
   String _disciplineLabel = "Level 0: Novice";
   
@@ -64,8 +64,8 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
       return;
     }
 
-    // 1. Discipline (Streak / Regularity)
-    // Simple logic: % of unique days in the last 7 days that have an entry.
+    
+    
     final now = DateTime.now();
     final last7Days = List.generate(7, (i) => DateTime(now.year, now.month, now.day).subtract(Duration(days: i)));
     int daysWithEntries = 0;
@@ -82,22 +82,22 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
     double discScore = daysWithEntries / 7.0;
     String discLbl = _getLevelLabel(discScore);
 
-    // 2. Consistency (Volume)
-    // Simple logic: Total entries this month / 30 (cap at 1.0)
+    
+    
     final thisMonthEntries = entries.where((e) => e.timestamp.month == now.month && e.timestamp.year == now.year).length;
     double consScore = (thisMonthEntries / 30.0).clamp(0.0, 1.0);
     String consLbl = _getLevelLabel(consScore);
 
-    // 3. Awareness (Depth)
-    // Simple logic: Average Note Length + Context Diversity
+    
+    
     double avgLength = entries.fold(0, (sum, e) => sum + e.note.length) / entries.length;
-    // Normalize length: 200 chars is "max" (1.0)
+    
     double lengthScore = (avgLength / 200.0).clamp(0.0, 1.0);
     
     double awareScore = lengthScore; 
     String awareLbl = _getLevelLabel(awareScore);
 
-    // Determine Actionable Insight (Lowest Score)
+    
     String recLabel = "Awareness";
     String recAdvice = "Reflect deeply on your spending.";
     Color recColor = Color(0xFF06B6D4);
@@ -268,10 +268,10 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
       drawer: CoreDrawer(),
       body: Stack(
         children: [
-          // 1. LIGHT BASE (Standard)
+          
           Container(color: Color(0xFFFDFCFE)),
 
-          // 2. ATMOSPHERIC ORBS
+          
           Positioned(
             top: -100,
             left: -50,
@@ -280,7 +280,7 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFE3D5FF).withOpacity(0.5), // Lavender
+                color: Color(0xFFE3D5FF).withOpacity(0.5), 
               ),
             ),
           ),
@@ -292,7 +292,7 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
               height: 350,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFFFD6E7).withOpacity(0.5), // Pink
+                color: Color(0xFFFFD6E7).withOpacity(0.5), 
               ),
             ),
           ),
@@ -304,12 +304,12 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFCBF3F0).withOpacity(0.4), // Cyan
+                color: Color(0xFFCBF3F0).withOpacity(0.4), 
               ),
             ),
           ),
 
-          // 3. GLOBAL ATMOSPHERIC BLUR
+          
           Positioned.fill(
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 60.0, sigmaY: 60.0),
@@ -322,7 +322,7 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
           CustomScrollView(
             physics: BouncingScrollPhysics(),
             slivers: [
-              // 1. Standard Vanishing Header
+              
               SliverAppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -370,21 +370,21 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
               SliverToBoxAdapter(child: SizedBox(height: 32)),
               SliverToBoxAdapter(child: SizedBox(height: 12)),
 
-              // 2. The Artifact (Pulsing Crystal)
+              
               SliverToBoxAdapter(
                 child: Center(
                   child: AnimatedBuilder(
                     animation: _pulseController,
                     builder: (context, child) {
-                      final scale = 1.0 + (_pulseController.value * 0.1); // 1.0 -> 1.1
-                      final glowOpacity = 0.3 + (_pulseController.value * 0.3); // 0.3 -> 0.6
+                      final scale = 1.0 + (_pulseController.value * 0.1); 
+                      final glowOpacity = 0.3 + (_pulseController.value * 0.3); 
                       
                       return Container(
                          width: 140, height: 140,
                          child: Stack(
                            alignment: Alignment.center,
                            children: [
-                             // Pulse Ripple
+                             
                              Container(
                                width: 140 * scale,
                                height: 140 * scale,
@@ -392,14 +392,14 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
                                  shape: BoxShape.circle,
                                  gradient: RadialGradient(
                                    colors: [
-                                     Color(0xFFD946EF).withOpacity(glowOpacity * 0.5), // Pink
+                                     Color(0xFFD946EF).withOpacity(glowOpacity * 0.5), 
                                      Colors.transparent,
                                    ],
                                  ),
                                ),
                              ),
                              
-                             // The Crystal
+                             
                              ClipRRect(
                                borderRadius: BorderRadius.circular(24), 
                                child: BackdropFilter(
@@ -409,7 +409,7 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
                                    height: 90,
                                      decoration: BoxDecoration(
                                        borderRadius: BorderRadius.circular(24),
-                                       color: Colors.white.withOpacity(0.4), // More glass
+                                       color: Colors.white.withOpacity(0.4), 
                                        border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
                                        gradient: LinearGradient(
                                          begin: Alignment.topLeft,
@@ -420,7 +420,6 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
                                          ]
                                        ),
                                        boxShadow: [
-                                         // Savora Glow (Pink/Purple Mix, very soft)
                                          BoxShadow(
                                            color: Color(0xFFD946EF).withOpacity(0.25),
                                            blurRadius: 50,
@@ -451,20 +450,20 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
 
               SliverToBoxAdapter(child: SizedBox(height: 32)),
 
-              // 3. Progress Bars (Dynamic)
+              
               SliverPadding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    _buildProgressRow("Discipline", _disciplineLabel, _disciplineScore, Color(0xFF8B5CF6)), // Violet
+                    _buildProgressRow("Discipline", _disciplineLabel, _disciplineScore, Color(0xFF8B5CF6)), 
                     SizedBox(height: 24),
-                    _buildProgressRow("Consistency", _consistencyLabel, _consistencyScore, Color(0xFFD946EF)), // Pink
+                    _buildProgressRow("Consistency", _consistencyLabel, _consistencyScore, Color(0xFFD946EF)), 
                     SizedBox(height: 24),
-                    _buildProgressRow("Awareness", _awarenessLabel, _awarenessScore, Color(0xFF06B6D4)), // Cyan
+                    _buildProgressRow("Awareness", _awarenessLabel, _awarenessScore, Color(0xFF06B6D4)), 
                     
                     SizedBox(height: 48),
 
-                    // Actionable Insight
+                    
                     if (_isLoading)
                        Center(child: CircularProgressIndicator())
                     else
@@ -558,9 +557,9 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
   }
 
   Widget _buildActionableInsight(String category, String advice, Color color) {
-    // Override with App Theme Gradient (Pink -> Violet) for consistency
-    final Color c1 = Color(0xFFD946EF); // Pink
-    final Color c2 = Color(0xFF8B5CF6); // Violet
+    
+    final Color c1 = Color(0xFFD946EF); 
+    final Color c2 = Color(0xFF8B5CF6); 
 
     return ValueListenableBuilder<AppearanceMode>(
       valueListenable: SettingsService().appearanceMode,
@@ -571,13 +570,13 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
 
         return GestureDetector(
           onTap: () {
-            // Navigate to Home to take action
+            
             Navigator.of(context).pushReplacementNamed('/');
           },
           child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.65), // Thick Glass
+            color: Colors.white.withOpacity(0.65), 
             borderRadius: BorderRadius.circular(radius),
             border: Border.all(
               color: Colors.white, 
@@ -585,7 +584,7 @@ class _TheForgeScreenState extends State<TheForgeScreen> with SingleTickerProvid
             ),
             boxShadow: [
               BoxShadow(
-                color: Color(0xFFD946EF).withOpacity(0.15), // Soft Pink Glow
+                color: Color(0xFFD946EF).withOpacity(0.15), 
                 blurRadius: 40,
                 offset: Offset(0, 15),
                 spreadRadius: 0,

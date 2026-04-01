@@ -41,7 +41,7 @@ class EntryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Clean white background
+      backgroundColor: Colors.white, 
       appBar: AppBar(
         title: Text(
           "Visual Trace", 
@@ -78,7 +78,7 @@ class EntryDetailScreen extends StatelessWidget {
             children: [
               SizedBox(height: 20),
               
-              // 1. TRANSACTION PILL
+              
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
@@ -98,7 +98,7 @@ class EntryDetailScreen extends StatelessWidget {
               
               SizedBox(height: 24),
               
-              // 2. HERO AMOUNT (Black, huge)
+              
               Text(
                 "₹${entry.amount.abs().toStringAsFixed(0)}",
                 style: GoogleFonts.plusJakartaSans(
@@ -111,7 +111,7 @@ class EntryDetailScreen extends StatelessWidget {
               
               SizedBox(height: 8),
               
-              // 3. DATE
+              
               Text(
                 DateFormat('MMMM d, yyyy • hh:mm a').format(entry.timestamp),
                 style: GoogleFonts.plusJakartaSans(
@@ -123,7 +123,7 @@ class EntryDetailScreen extends StatelessWidget {
 
               SizedBox(height: 48),
 
-              // 4. DATA CARD
+              
               Container(
                 padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -150,7 +150,7 @@ class EntryDetailScreen extends StatelessWidget {
                         _buildDivider(),
                         _buildMetricItem(
                           Icons.dashboard_rounded, 
-                          "Home", // Hardcoded per image or logic
+                          "Home", 
                           "CATEGORY"
                         ),
                         _buildDivider(),
@@ -166,7 +166,7 @@ class EntryDetailScreen extends StatelessWidget {
                      Container(height: 1, color: Colors.grey[100]),
                     SizedBox(height: 32),
 
-                    // REFLECTION
+                    
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Row(
@@ -250,7 +250,7 @@ class EntryDetailScreen extends StatelessWidget {
   }
 
   IconData _getIconForMood(String mood) {
-     // Simplified icon mapping
+     
      return Icons.face_rounded; 
   }
 }

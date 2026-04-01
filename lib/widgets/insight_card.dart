@@ -12,19 +12,19 @@ class InsightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Improved Spacing: Removed bottom margin to let parent handle layout
+      
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.0), // Fully transparent base
+        color: Colors.white.withOpacity(0.0), 
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: Colors.white.withOpacity(0.25), // Reduced opacity border
+          color: Colors.white.withOpacity(0.25), 
           width: 0.8, 
         ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12), // Softer blur
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12), 
           child: Container(
              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
              decoration: BoxDecoration(
@@ -39,7 +39,7 @@ class InsightCard extends StatelessWidget {
              ),
             child: Row(
               children: [
-                // Integrated Icon (No container, just pure icon with gradient)
+                
                 ShaderMask(
                   shaderCallback: (bounds) => LinearGradient(
                     colors: [_getGlowColor(insight.type), _getGlowColor(insight.type).withOpacity(0.7)],
@@ -49,20 +49,22 @@ class InsightCard extends StatelessWidget {
                   child: Icon(
                     _getIcon(insight.type),
                     size: 20,
-                    color: Colors.white, // Mask handles color
+                    color: Colors.white, 
                   ),
                 ),
                 SizedBox(width: 16),
                 
-                // Typography - Natural & Integrated
+                
                 Expanded(
                   child: Text(
                     insight.message,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13, // Slightly smaller for "native" feel
-                      fontWeight: FontWeight.w500, // Reduced weight from 600
+                      fontSize: 13, 
+                      fontWeight: FontWeight.w500, 
                       height: 1.4,
-                      color: Color(0xFF1A1A1A).withOpacity(0.75), // Softer textual contrast
+                      color: Color(0xFF1A1A1A).withOpacity(0.75), 
                       letterSpacing: 0.1,
                     ),
                   ),

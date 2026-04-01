@@ -3,16 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../widgets/expressive_widgets.dart';
-import '../widgets/glass_onboarding_dialog.dart'; // Added Import
+import '../widgets/glass_onboarding_dialog.dart'; 
 import '../data/data_service.dart';
-import '../data/settings_service.dart'; // Added Import
+import '../data/settings_service.dart'; 
 import '../data/models/reflection_entry.dart';
 import '../widgets/core_drawer.dart';
 import 'dart:ui' as ui;
 
-// --- MODEL FOR GROUPING ---
+
 class PersonDebt {
-  final String name; // Display Name (Title Case)
+  final String name; 
   final double totalAmount;
   final List<ReflectionEntry> entries;
 
@@ -50,7 +50,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
         title: "Track Your Favors",
         description: "Keep a transparent record of who owes you what.\n\nGrouped by person, tracked by history. Settle debts when they're returned, or forgive them entirely.",
         icon: Icons.volunteer_activism_rounded,
-        accentColor: Color(0xFFD946EF), // Pink
+        accentColor: Color(0xFFD946EF), 
         onDismiss: () {
           SettingsService().setHasSeenFavorsOnboarding(true);
           Navigator.pop(context);
@@ -67,12 +67,12 @@ class _FavorsScreenState extends State<FavorsScreen> {
   Future<void> _loadData() async {
     final allEntries = await DataService().repository.getEntries();
     
-    // Filter: Include Settled items now, just ensure they have a name
+    
     final userFavors = allEntries.where((e) => 
       e.personName != null && e.personName!.isNotEmpty
     ).toList();
 
-    // Grouping Logic (Case Insensitive)
+    
     final Map<String, List<ReflectionEntry>> map = {};
     for (var e in userFavors) {
       final key = e.personName!.trim().toLowerCase(); 
@@ -84,28 +84,28 @@ class _FavorsScreenState extends State<FavorsScreen> {
     double globalTotal = 0;
 
     map.forEach((key, entries) {
-      // Calculate Total: Only Active Items
+      
       double personTotal = entries.where((e) => !e.isSettled).fold(0, (sum, e) => sum + e.amount.abs());
       
-      // Sort Entries: Active first (Newest->Oldest), then Settled (Newest->Oldest)
+      
       entries.sort((a, b) {
         if (a.isSettled != b.isSettled) {
-          return a.isSettled ? 1 : -1; // Active (false) comes before Settled (true)
+          return a.isSettled ? 1 : -1; 
         }
-        return b.timestamp.compareTo(a.timestamp); // Newest first
+        return b.timestamp.compareTo(a.timestamp); 
       });
 
       String displayName = _capitalize(entries.first.personName!.trim());
       
-      // Only add to list if there are entries (which there always are if in map)
-      // Check: Should we hide people with ONLY settled debts? 
-      // User said "show history", so likely kept visible but with 0 total.
+      
+      
+      
       grouped.add(PersonDebt(name: displayName, totalAmount: personTotal, entries: entries));
       
       globalTotal += personTotal;
     });
 
-    // Sort People: Highest Active Debt first, then alphabetically
+    
     grouped.sort((a, b) {
       if (b.totalAmount != a.totalAmount) return b.totalAmount.compareTo(a.totalAmount);
       return a.name.compareTo(b.name);
@@ -138,7 +138,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
 
   Future<void> _toggleSettle(ReflectionEntry entry) async {
     HapticFeedback.mediumImpact();
-    // Toggle Status
+    
     final updated = ReflectionEntry(
       id: entry.id,
       amount: entry.amount,
@@ -148,7 +148,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
       context: entry.context,
       note: entry.note,
       personName: entry.personName,
-      isSettled: !entry.isSettled, // TOGGLE
+      isSettled: !entry.isSettled, 
     );
     await DataService().repository.saveEntry(updated);
     _loadData();
@@ -178,12 +178,12 @@ class _FavorsScreenState extends State<FavorsScreen> {
       drawer: CoreDrawer(),
       body: Stack(
         children: [
-          // 1. ATMOSPHERIC ORBS
+          
           Positioned(top: -100, left: -50, child: _GlowOrb(color: Color(0xFFE3D5FF), size: 400)),
           Positioned(top: 200, right: -100, child: _GlowOrb(color: Color(0xFFFFD6E7), size: 350)),
           Positioned(bottom: -50, left: -50, child: _GlowOrb(color: Color(0xFFCBF3F0), size: 400)),
 
-          // 2. GLOBAL BLUR
+          
           Positioned.fill(
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50),
@@ -191,13 +191,13 @@ class _FavorsScreenState extends State<FavorsScreen> {
             ),
           ),
 
-          // 3. CONTENT
+          
           _isLoading 
             ? Center(child: CircularProgressIndicator(color: Color(0xFF8B5CF6))) 
             : CustomScrollView(
                 physics: BouncingScrollPhysics(),
                 slivers: [
-                   // APP BAR
+                   
                    SliverAppBar(
                      backgroundColor: Colors.transparent,
                      elevation: 0,
@@ -207,10 +207,10 @@ class _FavorsScreenState extends State<FavorsScreen> {
                      centerTitle: true,
                      flexibleSpace: ClipRRect(
                        child: BackdropFilter(
-                         filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Reduced blur
+                         filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10), 
                          child: Container(
                            decoration: BoxDecoration(
-                             color: Colors.transparent, // Fully transparent
+                             color: Colors.transparent, 
                            ),
                          ),
                        ),
@@ -235,7 +235,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
                      ),
                    ),
 
-                   // HERO: TOTAL OUTSTANDING
+                   
                    SliverPadding(
                      padding: EdgeInsets.fromLTRB(24, 20, 24, 30),
                      sliver: SliverToBoxAdapter(
@@ -271,7 +271,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
                      ),
                    ),
 
-                   // EMPTY STATE
+                   
                    if (_groupedDebts.isEmpty)
                       SliverFillRemaining(
                         hasScrollBody: false,
@@ -288,7 +288,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
                         ),
                       )
                    else
-                   // GROUPED LIST
+                   
                    SliverPadding(
                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                      sliver: SliverList(
@@ -311,7 +311,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
               ),
         ],
       ),
-      // FAB
+      
       floatingActionButton: UnifiedProButton(
           text: "Add Entry",
           onTap: () => _showAddDialog(),
@@ -325,7 +325,7 @@ class _FavorsScreenState extends State<FavorsScreen> {
   }
 }
 
-// --- COMPONENTS ---
+
 
 class _GlowOrb extends StatelessWidget {
   final Color color;
@@ -360,7 +360,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
 
   @override
   Widget build(BuildContext context) {
-    // Determine status color
+    
     final double debt = widget.data.totalAmount;
     final bool isClear = debt == 0;
     final statusColor = isClear ? Color(0xFF10B981) : Color(0xFFC026D3);
@@ -383,7 +383,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
           filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Column(
             children: [
-              // HEADER ROW
+              
               InkWell(
                 onTap: () => setState(() => _expanded = !_expanded),
                 borderRadius: BorderRadius.circular(24),
@@ -391,15 +391,15 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
                   padding: EdgeInsets.all(20),
                   child: Row(
                     children: [
-                      // Avatar
+                      
                       Container(
                         width: 50, height: 50,
                         decoration: BoxDecoration(
                            gradient: LinearGradient(
                              begin: Alignment.topLeft, end: Alignment.bottomRight,
                              colors: isClear 
-                               ? [Color(0xFFD1FAE5), Color(0xFFECFDF5)] // Greenish
-                               : [Color(0xFFE9D5FF), Color(0xFFF3E8FF)], // Purplish
+                               ? [Color(0xFFD1FAE5), Color(0xFFECFDF5)] 
+                               : [Color(0xFFE9D5FF), Color(0xFFF3E8FF)], 
                            ),
                            shape: BoxShape.circle,
                            border: Border.all(color: Colors.white, width: 2), 
@@ -415,7 +415,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
                         ),
                       ),
                       SizedBox(width: 16),
-                      // Info
+                      
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,7 +436,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
                           ],
                         ),
                       ),
-                      // Total
+                      
                       if (!isClear)
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -457,7 +457,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
                 ),
               ),
 
-              // EXPANDED BODY
+              
               if (_expanded)
                 Container(
                   decoration: BoxDecoration(
@@ -474,7 +474,7 @@ class _PersonGlassCardState extends State<_PersonGlassCard> {
                          );
                        }),
                        
-                       // ADD ACTION
+                       
                        InkWell(
                          onTap: widget.onAddMore,
                          child: Container(
@@ -537,7 +537,7 @@ class _EntryItem extends StatelessWidget {
                   Text("Entry Options", style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFF1A1A1A))),
                   SizedBox(height: 24),
                   
-                  // TOGGLE SETTLE
+                  
                   _OptionButton(
                     icon: entry.isSettled ? Icons.undo_rounded : Icons.check_circle_rounded,
                     color: entry.isSettled ? Color(0xFF6366F1) : Color(0xFF10B981),
@@ -549,7 +549,7 @@ class _EntryItem extends StatelessWidget {
                   ),
                   SizedBox(height: 12),
 
-                  // DELETE
+                  
                   _OptionButton(
                     icon: Icons.delete_rounded,
                     color: Color(0xFFEF4444),
@@ -557,7 +557,7 @@ class _EntryItem extends StatelessWidget {
                     isDestructive: true,
                     onTap: () async {
                       Navigator.pop(ctx);
-                      // Confirm Delete
+                      
                       final confirm = await showDialog<bool>(
                         context: context,
                         builder: (c) => AlertDialog(
@@ -584,7 +584,7 @@ class _EntryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Styling for Settled vs Active
+    
     final isSettled = entry.isSettled;
     final contentColor = isSettled ? Color(0xFF1A1A1A).withOpacity(0.4) : Color(0xFF1A1A1A);
     final amountColor = isSettled ? Color(0xFF10B981).withOpacity(0.7) : Color(0xFF1A1A1A).withOpacity(0.7);
@@ -599,7 +599,7 @@ class _EntryItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         child: Row(
           children: [
-            // Dot or Check
+            
             Container(
               width: isSettled ? 16 : 8, height: isSettled ? 16 : 8,
               decoration: BoxDecoration(
@@ -719,7 +719,7 @@ class _AddFavorDialogState extends State<_AddFavorDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Premium Glass Dialog
+    
     return Dialog(
        backgroundColor: Colors.transparent,
        insetPadding: EdgeInsets.all(20),
@@ -730,7 +730,7 @@ class _AddFavorDialogState extends State<_AddFavorDialog> {
            child: Container(
              padding: EdgeInsets.all(32),
              decoration: BoxDecoration(
-               color: Colors.white.withOpacity(0.8), // Milk Glass
+               color: Colors.white.withOpacity(0.8), 
                borderRadius: BorderRadius.circular(32),
                border: Border.all(color: Colors.white, width: 1),
                boxShadow: [
@@ -745,22 +745,22 @@ class _AddFavorDialogState extends State<_AddFavorDialog> {
                    child: Text("New Favor", style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800, color: Color(0xFF1A1A1A))),
                  ),
                  SizedBox(height: 24),
-                 // Name field with Icon
+                 
                  _buildField(_nameCtrl, "Who owes you?", Icons.person_outline_rounded),
                  SizedBox(height: 12),
-                 // Amount field with Icon
+                 
                  _buildField(_amountCtrl, "Amount (₹)", Icons.currency_rupee_rounded, isNumber: true),
                  SizedBox(height: 12),
-                 // Note field with Icon
+                 
                  _buildField(_noteCtrl, "What for? (Optional)", Icons.note_alt_outlined),
                  SizedBox(height: 32),
-                 // Gradient Button (Deep Violet for visual distinction from FAB)
+                 
                  UnifiedProButton(
                    text: "Add to List",
                    onTap: _submit,
                    gradientColors: [
-                      Color(0xFF8B5CF6), // Violet-500
-                      Color(0xFF7C3AED)  // Violet-600
+                      Color(0xFF8B5CF6), 
+                      Color(0xFF7C3AED)  
                    ],
                    isWide: true, 
                  ),

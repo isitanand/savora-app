@@ -1,6 +1,6 @@
 class MonthlyIntent {
   final String id;
-  final String monthYear; // "2024-12"
+  final String monthYear; 
   final String intentText;
   final DateTime createdAt;
 

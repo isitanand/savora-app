@@ -25,17 +25,17 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
   Future<void> _exportData() async {
     setState(() => _isLoading = true);
     try {
-      // 1. Get Data
+      
       final jsonString = await DataService().repository.exportJson();
       
-      // 2. Write to Temp File
+      
       final directory = await getTemporaryDirectory();
       final dateStr = DateFormat('yyyyMMdd_HHmm').format(DateTime.now());
       final fileName = 'savora_backup_$dateStr.json';
       final file = File('${directory.path}/$fileName');
       await file.writeAsString(jsonString);
 
-      // 3. Share
+      
       await Share.shareXFiles(
         [XFile(file.path)],
         subject: 'Savora Data Backup',
@@ -50,7 +50,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
   }
 
   Future<void> _importData() async {
-    // Confirmation
+    
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -75,7 +75,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
 
     setState(() => _isLoading = true);
     try {
-      // 1. Pick File
+      
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
@@ -85,10 +85,10 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
         final file = File(result.files.single.path!);
         final jsonString = await file.readAsString();
 
-        // 2. Import
+        
         await DataService().repository.importJson(jsonString);
         
-        // 3. Success
+        
         _showSuccess("Data restored successfully!");
       }
     } catch (e) {
@@ -113,7 +113,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
       drawer: CoreDrawer(),
       body: Stack(
         children: [
-          // 1. ATMOSPHERE
+          
           Positioned(top: -100, left: -50, child: _GlowOrb(color: Color(0xFFE3D5FF), size: 400)),
           Positioned(bottom: -50, right: -50, child: _GlowOrb(color: Color(0xFFCBF3F0), size: 350)),
           Positioned.fill(
@@ -123,11 +123,11 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
             ),
           ),
 
-          // 2. CONTENT
+          
           SafeArea(
             child: Column(
               children: [
-                // Header
+                
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                   child: Row(
@@ -144,7 +144,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 48), // Balance Icon
+                      SizedBox(width: 48), 
                     ],
                   ),
                 ),
@@ -154,7 +154,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
                     padding: EdgeInsets.all(24),
                     child: Column(
                       children: [
-                        // EXPORT CARD
+                        
                         _BackupCard(
                           title: "Backup Data",
                           description: "Export all your entries and intents to a JSON file. Keep it safe.",
@@ -167,7 +167,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
                         
                         SizedBox(height: 24),
 
-                        // IMPORT CARD
+                        
                         _BackupCard(
                           title: "Restore Data",
                           description: "Import a previously exported backup file. This will overwrite current data.",
@@ -181,7 +181,7 @@ class _DataBackupScreenState extends State<DataBackupScreen> {
 
                         SizedBox(height: 48),
                         
-                        // FOOTER INFO CARD
+                        
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                           decoration: BoxDecoration(
@@ -246,12 +246,12 @@ class _BackupCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7), // Increased opacity for premium feel
-        borderRadius: BorderRadius.circular(32), // Softer corners
-        border: Border.all(color: Colors.white, width: 1.5), // Prismatic Border
+        color: Colors.white.withOpacity(0.7), 
+        borderRadius: BorderRadius.circular(32), 
+        border: Border.all(color: Colors.white, width: 1.5), 
         boxShadow: [
           BoxShadow(color: color.withOpacity(0.15), blurRadius: 24, offset: Offset(0, 12)),
-          BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 0, spreadRadius: 0, offset: Offset(0, 0)), // Inner light
+          BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 0, spreadRadius: 0, offset: Offset(0, 0)), 
         ],
       ),
       child: Column(
@@ -261,7 +261,7 @@ class _BackupCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               shape: BoxShape.circle,
-              border: Border.all(color: color.withOpacity(0.2), width: 1), // Subtle icon border
+              border: Border.all(color: color.withOpacity(0.2), width: 1), 
             ),
             child: Icon(icon, color: color, size: 36),
           ),

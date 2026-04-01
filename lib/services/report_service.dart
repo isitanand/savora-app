@@ -14,13 +14,13 @@ class ReportService {
     final dateFormat = DateFormat('MMM dd, yyyy');
     final timeFormat = DateFormat('hh:mm a');
     
-    // Load Premium Fonts
+    
     final fontRegular = await PdfGoogleFonts.outfitRegular();
-    final fontBold = await PdfGoogleFonts.outfitBold(); // w800 equivalent
-    final fontLight = await PdfGoogleFonts.outfitLight(); // w300
+    final fontBold = await PdfGoogleFonts.outfitBold(); 
+    final fontLight = await PdfGoogleFonts.outfitLight(); 
     final iconFont = await PdfGoogleFonts.materialIcons();
 
-    // 0. LOAD IMAGE LOGIC
+    
     pw.ImageProvider? profileImage;
     if (profileImagePath != null && profileImagePath.isNotEmpty) {
       if (profileImagePath.startsWith('http')) {
@@ -31,7 +31,7 @@ class ReportService {
       }
     }
 
-    // 1. DATA PREP
+    
     final currentMonth = DateTime(now.year, now.month);
     final monthEntries = entries.where((e) => 
       e.timestamp.year == currentMonth.year && 
@@ -43,7 +43,7 @@ class ReportService {
       if (e.amount < 0) totalSpent += e.amount.abs();
     }
 
-    // Velocity & Mood Logic
+    
     int afternoonCount = monthEntries.where((e) => e.timestamp.hour >= 16).length;
     bool highVelocityAfternoon = monthEntries.isNotEmpty && (afternoonCount / monthEntries.length > 0.5);
     
@@ -81,11 +81,11 @@ class ReportService {
        contextText = "It seems you feel '$topMood' most often when spending on '$topCategory'.";
     }
 
-    // 2. BUILD PRO PDF - GLASS CARD ARCHITECTURE
+    
     pdf.addPage(
       pw.MultiPage(
         pageTheme: pw.PageTheme(
-          margin: pw.EdgeInsets.zero, // Full Bleed
+          margin: pw.EdgeInsets.zero, 
           pageFormat: PdfPageFormat.a4,
           theme: pw.ThemeData.withFont(
             base: fontRegular,
@@ -95,12 +95,12 @@ class ReportService {
           buildBackground: (context) {
             return pw.Stack(
               children: [
-                // Header Gradient (x=0 to x=maxWidth)
+                
                 pw.Align(
                   alignment: pw.Alignment.topCenter,
                   child: pw.Container(
                     height: 15,
-                    width: double.infinity, // Robust Full Width
+                    width: double.infinity, 
                     decoration: pw.BoxDecoration(
                       gradient: pw.LinearGradient(
                         colors: [PdfColor.fromInt(0xFFEC4899), PdfColor.fromInt(0xFF8B5CF6)],
@@ -113,18 +113,18 @@ class ReportService {
           }
         ),
         
-        // Footer: Absolute Bottom Center
+        
         footer: (context) => pw.Container(
           padding: pw.EdgeInsets.only(bottom: 20),
-          width: double.infinity, // Ensure full width for alignment
-          child: pw.Center( // Explicit Center Widget
+          width: double.infinity, 
+          child: pw.Center( 
             child: pw.Text(
               "Crafted by Anand Choubey",
               style: pw.TextStyle(
-                font: fontLight, // w300
+                font: fontLight, 
                 fontSize: 9, 
                 letterSpacing: 1.2, 
-                color: PdfColor.fromInt(0xFF9C27B0), // Savora Purple
+                color: PdfColor.fromInt(0xFF9C27B0), 
               ),
             ),
           ),
@@ -132,13 +132,13 @@ class ReportService {
 
         build: (pw.Context context) {
           return [
-            // CONTENT PADDING
+            
             pw.Padding(
               padding: pw.EdgeInsets.fromLTRB(40, 60, 40, 20),
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                   // HEADER ROW
+                   
                    pw.Row(
                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                      crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -149,7 +149,7 @@ class ReportService {
                            pw.Text(
                              "FINANCIAL REPORT",
                              style: pw.TextStyle(
-                               font: fontBold, // w800
+                               font: fontBold, 
                                fontSize: 24, 
                                letterSpacing: 3.0,
                                color: PdfColor.fromInt(0xFF1F2937),
@@ -167,7 +167,7 @@ class ReportService {
                            ),
                          ],
                        ),
-                       // Profile Photo
+                       
                        pw.Container(
                          height: 48, 
                          width: 48,
@@ -188,7 +188,7 @@ class ReportService {
                    
                    pw.SizedBox(height: 40),
 
-                   // METRICS ROW
+                   
                    pw.Row(
                      children: [
                        _buildMetric("TOTAL SPENT", "INR ${totalSpent.toStringAsFixed(0)}", fontBold, color: PdfColor.fromInt(0xFF8B5CF6)),
@@ -201,7 +201,7 @@ class ReportService {
 
                    pw.SizedBox(height: 40),
 
-                   // INSIGHT
+                   
                    pw.Container(
                      padding: pw.EdgeInsets.only(left: 12),
                      decoration: pw.BoxDecoration(
@@ -222,20 +222,20 @@ class ReportService {
                    pw.Text("TRANSACTION HISTORY", style: pw.TextStyle(font: fontBold, fontSize: 10, letterSpacing: 1.5, color: PdfColors.grey400)),
                    pw.SizedBox(height: 16),
 
-                   // 3D-GLASS CARD LOOP
+                   
                    ...monthEntries.map((e) {
                      return pw.Container(
                        margin: pw.EdgeInsets.only(bottom: 12),
                        padding: pw.EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                        decoration: pw.BoxDecoration(
-                         color: PdfColor.fromInt(0xFFF9FAFB), // Very light gray fill (Simulator for glass)
+                         color: PdfColor.fromInt(0xFFF9FAFB), 
                          borderRadius: pw.BorderRadius.circular(12),
-                         border: pw.Border.all(color: PdfColor.fromInt(0xFFE5E7EB), width: 0.5), // Prismatic Border approx
-                         // "Inner Glow" simulated by top border? We can't do inner shadow easily.
+                         border: pw.Border.all(color: PdfColor.fromInt(0xFFE5E7EB), width: 0.5), 
+                         
                        ),
                        child: pw.Stack(
                          children: [
-                            // Inner Glow Line (Top Edge)
+                            
                             pw.Positioned(
                               top: 0, left: 0, right: 0,
                               child: pw.Container(height: 1, color: PdfColors.white)
@@ -244,7 +244,7 @@ class ReportService {
                             pw.Row(
                              crossAxisAlignment: pw.CrossAxisAlignment.center,
                              children: [
-                               // 1. LEFT: Intent (Icon + Mood)
+                               
                                pw.Container(
                                  width: 80,
                                  child: pw.Column(
@@ -254,7 +254,7 @@ class ReportService {
                                        children: [
                                          _getIconForContext(e.context),
                                          pw.SizedBox(width: 6),
-                                         pw.Text(e.mood.isEmpty ? "Neutral" : e.mood, style: pw.TextStyle(font: fontBold, fontSize: 10, color: PdfColor.fromInt(0xFF8B5CF6))), // Violet Mood
+                                         pw.Text(e.mood.isEmpty ? "Neutral" : e.mood, style: pw.TextStyle(font: fontBold, fontSize: 10, color: PdfColor.fromInt(0xFF8B5CF6))), 
                                        ]
                                      ),
                                      pw.SizedBox(height: 4),
@@ -263,28 +263,28 @@ class ReportService {
                                  )
                                ),
                                
-                               // 2. CENTER: Detail (Desc + Time)
+                               
                                pw.Expanded(
                                  child: pw.Column(
                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
                                    children: [
-                                     pw.Text(e.note.isEmpty ? "-" : e.note, style: pw.TextStyle(fontSize: 10, color: PdfColors.grey900)), // Darker desc
+                                     pw.Text(e.note.isEmpty ? "-" : e.note, style: pw.TextStyle(fontSize: 10, color: PdfColors.grey900)), 
                                      pw.SizedBox(height: 4),
                                      pw.Text(
                                        "${dateFormat.format(e.timestamp)}  •  ${timeFormat.format(e.timestamp)}", 
-                                       style: pw.TextStyle(font: fontRegular, fontSize: 9, color: PdfColors.grey700) // Increased visibility
+                                       style: pw.TextStyle(font: fontRegular, fontSize: 9, color: PdfColors.grey700) 
                                      ),
                                    ]
                                  )
                                ),
 
-                               // 3. RIGHT: Capital (Amount)
+                               
                                pw.Text(
                                  "INR ${e.amount.abs().toStringAsFixed(0)}", 
                                  style: pw.TextStyle(
-                                   font: fontBold, // w800
+                                   font: fontBold, 
                                    fontSize: 15, 
-                                   color: PdfColors.black, // Removed Pink as requested
+                                   color: PdfColors.black, 
                                  )
                                ),
                              ]
@@ -304,7 +304,7 @@ class ReportService {
     await Printing.sharePdf(bytes: await pdf.save(), filename: 'Savora_Report_${now.day}_${now.hour}${now.minute}${now.second}.pdf');
   }
 
-  // --- CLEAN HELPERS ---
+  
   
   pw.Widget _buildMetric(String label, String value, pw.Font fontBold, {PdfColor? color}) {
     return pw.Column(
@@ -330,7 +330,7 @@ class ReportService {
     );
   }
 
-  // Bridging method to match original calls (which were static/instance)
+  
   Future<void> generateAndShare(List<ReflectionEntry> entries, String userName, double monthlyLimit, String? profileImagePath) async {
       await _generateAndShare(entries, userName, monthlyLimit, profileImagePath);
   }
@@ -346,6 +346,6 @@ class ReportService {
       case 'Online': codePoint = 0xe80b; break; 
       default: codePoint = 0xe88a; 
     }
-    return pw.Icon(pw.IconData(codePoint), color: PdfColor.fromInt(0xFF8B5CF6), size: 10); // High contrast violet
+    return pw.Icon(pw.IconData(codePoint), color: PdfColor.fromInt(0xFF8B5CF6), size: 10); 
   }
 }

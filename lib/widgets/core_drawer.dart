@@ -1,15 +1,16 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../screens/daily_stream_screen.dart'; // Added Home Import
+import '../screens/daily_stream_screen.dart'; 
 import '../screens/context_archive_screen.dart';
 import '../screens/data_transparency_screen.dart';
 import '../screens/the_forge_screen.dart';
 import '../screens/monthly_intent_screen.dart';
 import '../screens/pattern_view_screen.dart';
 import '../screens/quiet_space_screen.dart';
-import '../screens/favors_screen.dart'; // Added Favors Import
-import '../screens/data_backup_screen.dart'; // Added Data Backup Import
+import '../screens/favors_screen.dart'; 
+import '../screens/data_backup_screen.dart'; 
+import '../screens/profile_screen.dart'; 
 import '../data/settings_service.dart'; 
 
 class CoreDrawer extends StatelessWidget {
@@ -17,15 +18,15 @@ class CoreDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mandate: 80% screen width
+    
     final double drawerWidth = MediaQuery.of(context).size.width * 0.8;
-    // Mandate: Route Awareness
+    
     final String? currentRoute = ModalRoute.of(context)?.settings.name;
 
     return ValueListenableBuilder<AppearanceMode>(
       valueListenable: SettingsService().appearanceMode,
       builder: (context, mode, _) {
-        // Mandate: Softer corners even in "Sharp" mode for premium feel - OVERRIDDEN for Sharp Mode
+        
         final isSharp = mode == AppearanceMode.sharp;
         final double radius = isSharp ? 0.0 : 36.0;
 
@@ -41,7 +42,7 @@ class CoreDrawer extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              // 1. Structural Glass DNA - The Blur
+              
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
@@ -50,7 +51,7 @@ class CoreDrawer extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      // ATMOSPHERIC ORBS (Enhanced)
+                      
                       Positioned(
                         top: -100,
                         left: -50,
@@ -59,7 +60,7 @@ class CoreDrawer extends StatelessWidget {
                           height: 400,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF90CAF9).withOpacity(0.35), // Blue (Stronger)
+                            color: Color(0xFF90CAF9).withOpacity(0.35), 
                             boxShadow: [BoxShadow(color: Color(0xFF90CAF9).withOpacity(0.2), blurRadius: 100)],
                           ),
                         ),
@@ -72,7 +73,7 @@ class CoreDrawer extends StatelessWidget {
                           height: 300,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFFCE93D8).withOpacity(0.25), // Purple (Subtler)
+                            color: Color(0xFFCE93D8).withOpacity(0.25), 
                             boxShadow: [BoxShadow(color: Color(0xFFCE93D8).withOpacity(0.2), blurRadius: 80)],
                           ),
                         ),
@@ -85,15 +86,15 @@ class CoreDrawer extends StatelessWidget {
                           height: 250,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF80DEEA).withOpacity(0.2), // Cyan/Teal for depth
+                            color: Color(0xFF80DEEA).withOpacity(0.2), 
                             boxShadow: [BoxShadow(color: Color(0xFF80DEEA).withOpacity(0.15), blurRadius: 60)],
                           ),
                         ),
                       ),
     
-                      // The Blur
+                      
                       BackdropFilter(
-                        filter: ui.ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0), // Mandate: sigma 30
+                        filter: ui.ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0), 
                         child: Container(
                           color: Colors.transparent,
                         ),
@@ -103,11 +104,11 @@ class CoreDrawer extends StatelessWidget {
                 ),
               ),
     
-              // 2. Base Layer with Milky Effect (Optimized)
+              
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.75), // Slightly more transparency for depth
+                    color: Colors.white.withOpacity(0.75), 
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(radius),
                       bottomRight: Radius.circular(radius),
@@ -116,7 +117,7 @@ class CoreDrawer extends StatelessWidget {
                 ),
               ),
     
-              // 3. Scrim - 3D Frost Depth
+              
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
@@ -124,7 +125,7 @@ class CoreDrawer extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.white.withOpacity(0.7), // Stronger highlight
+                        Colors.white.withOpacity(0.7), 
                         Colors.white.withOpacity(0.2),
                         Colors.white.withOpacity(0.1),
                       ],
@@ -134,7 +135,7 @@ class CoreDrawer extends StatelessWidget {
                       topRight: Radius.circular(radius),
                       bottomRight: Radius.circular(radius),
                     ),
-                    // Glass Border Overlay
+                    
                     border: Border.all(
                       color: Colors.white.withOpacity(0.6),
                       width: 1.0,
@@ -143,14 +144,14 @@ class CoreDrawer extends StatelessWidget {
                 ),
               ),
 
-          // 4. Content Content
+          
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Premium Header - BREATHABLE
+                
                 Padding(
-                  padding: EdgeInsets.fromLTRB(32, 60, 32, 40), // Generous top/bottom padding
+                  padding: EdgeInsets.fromLTRB(32, 50, 32, 32), 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -169,7 +170,7 @@ class CoreDrawer extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child: Container(
-                            width: 64, // Standard Premium Size
+                            width: 64, 
                             height: 64,
                             color: Colors.white,
                             child: Transform.scale(
@@ -182,7 +183,7 @@ class CoreDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 24), // Increased from 16
+                      SizedBox(height: 24), 
                       Text(
                         "SAVORA",
                         style: GoogleFonts.plusJakartaSans(
@@ -192,7 +193,7 @@ class CoreDrawer extends StatelessWidget {
                           letterSpacing: -1.0,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 4),
                       Text(
                         "Self-Aware Personal Finance", 
                         style: GoogleFonts.plusJakartaSans(
@@ -206,7 +207,7 @@ class CoreDrawer extends StatelessWidget {
                   ),
                 ),
 
-                // Seamless Navigation
+                
                 Expanded(
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
@@ -215,12 +216,12 @@ class CoreDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildSectionHeader("EXPLORE"),
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         _GlassNavItem(
                           icon: Icons.grid_view_rounded,
                           label: "Home",
                           onTap: () {
-                            Navigator.pop(context); // Close drawer
+                            Navigator.pop(context); 
                             if (currentRoute != null && currentRoute != '/') {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (_) => DailyStreamScreen()),
@@ -231,7 +232,7 @@ class CoreDrawer extends StatelessWidget {
                           isActive: currentRoute == null || currentRoute == '/', 
                           isSharp: isSharp,
                         ),
-                        SizedBox(height: 16), // Breathable Gap
+                        SizedBox(height: 16), 
                          _GlassNavItem(
                             icon: Icons.pie_chart_rounded, 
                             label: "Analytics", 
@@ -239,14 +240,28 @@ class CoreDrawer extends StatelessWidget {
                             isActive: currentRoute == '/analytics',
                             isSharp: isSharp
                         ),
-                        SizedBox(height: 16),
-                        _GlassNavItem(
-                            icon: Icons.lightbulb_circle_rounded, 
-                            label: "Intent", 
-                            onTap: () => _nav(context, MonthlyIntentScreen(), '/intent', isSharp), 
-                            isActive: currentRoute == '/intent',
-                            isSharp: isSharp
+                        SizedBox(height: 24), 
+                        
+                        
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: Container(
+                            height: 1.5,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF8B5CF6).withOpacity(0.0),
+                                  Color(0xFFD946EF).withOpacity(0.4),
+                                  Color(0xFF8B5CF6).withOpacity(0.0),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
+                        
+                        SizedBox(height: 32), 
+
+                        _buildSectionHeader("ADVANCED"),
                         SizedBox(height: 16),
                         _GlassNavItem(
                             icon: Icons.folder_open_rounded, 
@@ -263,30 +278,7 @@ class CoreDrawer extends StatelessWidget {
                             isActive: currentRoute == '/favors',
                             isSharp: isSharp
                         ),
-
-                        SizedBox(height: 48), // Large breathy section gap
-                        
-                        // Mandate: The Thin Violet Line Divider
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Container(
-                            height: 1.5,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF8B5CF6).withOpacity(0.0),
-                                  Color(0xFFD946EF).withOpacity(0.4),
-                                  Color(0xFF8B5CF6).withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        
-                        SizedBox(height: 48), // Large breathy section gap
-
-                        _buildSectionHeader("MINDFULNESS"),
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         _GlassNavItem(
                            icon: Icons.self_improvement_rounded, 
                            label: "Quiet Space", 
@@ -294,19 +286,10 @@ class CoreDrawer extends StatelessWidget {
                            isActive: currentRoute == '/quiet',
                            isSharp: isSharp
                         ),
-                        SizedBox(height: 16),
-                        _GlassNavItem(
-                           icon: Icons.emoji_events_rounded, 
-                           label: "The Forge", 
-                           onTap: () => _nav(context, TheForgeScreen(), '/forge', isSharp), 
-                           isActive: currentRoute == '/forge',
-                           isSharp: isSharp,
-                           iconSize: 18.0,
-                        ),
 
-                        SizedBox(height: 48),
+                        SizedBox(height: 32), 
 
-                        // Mandate: The Thin Violet Line Divider (Replicated for Data)
+                        
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Container(
@@ -323,11 +306,11 @@ class CoreDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: 48),
+                        SizedBox(height: 32), 
 
-                        // DATA SECTION
+                        
                         _buildSectionHeader("DATA"),
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         _GlassNavItem(
                            icon: Icons.settings_backup_restore_rounded, 
                            label: "Data & Backups", 
@@ -336,12 +319,12 @@ class CoreDrawer extends StatelessWidget {
                            isSharp: isSharp
                         ),
 
-                        SizedBox(height: 60), // Generous Bottom Margin
+                        SizedBox(height: 60), 
                       ],
                     ),
                   ),
                 ),
-                // FOOTER REMOVED
+                
               ],
             ),
           ),
@@ -353,7 +336,7 @@ class CoreDrawer extends StatelessWidget {
   }
 
   void _nav(BuildContext context, Widget screen, String routeName, bool isSharp) {
-    Navigator.pop(context); // Close drawer
+    Navigator.pop(context); 
     Navigator.push(context, MaterialPageRoute(
       builder: (_) => screen,
       settings: RouteSettings(name: routeName),
@@ -402,7 +385,7 @@ class _GlassNavItemState extends State<_GlassNavItem> {
 
   @override
   Widget build(BuildContext context) {
-    // Mandate: Active State = 100% Opacity 3D-Glass Pill
+    
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
@@ -415,12 +398,12 @@ class _GlassNavItemState extends State<_GlassNavItem> {
         duration: Duration(milliseconds: 100),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 200),
-          // BREATY VERTICAL PADDING (18)
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18), 
+          
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14), 
           decoration: widget.isActive
               ? BoxDecoration(
-                  color: Colors.white, // Pure white active
-                  borderRadius: BorderRadius.circular(widget.isSharp ? 0 : 24), // Rounder
+                  color: Colors.white, 
+                  borderRadius: BorderRadius.circular(widget.isSharp ? 0 : 24), 
                   border: Border.all(
                     width: 1.0,
                     color: Colors.white,
@@ -436,7 +419,7 @@ class _GlassNavItemState extends State<_GlassNavItem> {
                 ),
           child: Row(
             children: [
-              // FIXED WIDTH CONTAINER FOR ICON
+              
               Container(
                 width: 24, 
                 alignment: Alignment.center,
@@ -448,11 +431,11 @@ class _GlassNavItemState extends State<_GlassNavItem> {
                       : Color(0xFF1A1A1A).withOpacity(0.6), 
                 ),
               ),
-              SizedBox(width: 20), // Wider text gap
+              SizedBox(width: 12), 
               Text(
                 widget.label,
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16, // Slightly larger text
+                  fontSize: 16, 
                   fontWeight: widget.isActive ? FontWeight.w800 : FontWeight.w600, 
                   color: widget.isActive
                       ? Color(0xFF7C3AED)

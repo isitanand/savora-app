@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _initializeApp() async {
-    // 1. Initialize Services safely
+    
     try {
       await DataService().init();
     } catch (e) {
@@ -49,10 +49,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       debugPrint("SettingsService failed: $e");
     }
 
-    // 2. Check Lock State (only if settings loaded)
+    
     _checkInitialLock();
 
-    // 3. Update UI to show App
+    
     if (mounted) {
       setState(() {
         _isInitialized = true;
@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               if (_isLocked)
                 Stack(
                   children: [
-                    // 1. BLUR EFFECT
+                    
                     Positioned.fill(
                       child: BackdropFilter(
                         filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50),
@@ -184,7 +184,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       ),
                     ),
                     
-                    // 2. UNLOCK CONTENT
+                    
                     Scaffold(
                         backgroundColor: Colors.transparent,
                         body: Center(

@@ -17,7 +17,6 @@ class PatternEngine {
     return patterns;
   }
 
-  // Heuristic 1: Time Clusters
   List<BehaviorPattern> _analyzeTimeClusters(List<ReflectionEntry> entries) {
     int lateNightCount = 0;
     int morningCount = 0;
@@ -56,7 +55,6 @@ class PatternEngine {
     return results;
   }
 
-  // Heuristic 2: Mood Recurrence
   List<BehaviorPattern> _analyzeMoodRecurrence(List<ReflectionEntry> entries) {
     final moodCounts = <String, int>{};
 
@@ -83,7 +81,6 @@ class PatternEngine {
     return results;
   }
 
-  // Heuristic 3: Context Recurrence
   List<BehaviorPattern> _analyzeContextClusters(List<ReflectionEntry> entries) {
     final contextCounts = <String, int>{};
 

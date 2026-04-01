@@ -10,7 +10,7 @@ import '../data/settings_service.dart';
 import '../widgets/glass_onboarding_dialog.dart';
 
 class ContextArchiveScreen extends StatefulWidget {
-  // Mandate: No const
+  
   ContextArchiveScreen({super.key});
 
   @override
@@ -18,7 +18,7 @@ class ContextArchiveScreen extends StatefulWidget {
 }
 
 class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
-  int _sortOption = 0; // 0 = Highest Spend (₹), 1 = Most Frequent (#)
+  int _sortOption = 0; 
   Map<String, _VaultData>? _vaultData;
 
   @override
@@ -26,7 +26,7 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
     super.initState();
     _loadVault();
     
-    // Check Onboarding
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!SettingsService().hasSeenVaultOnboarding.value) {
         showDialog(
@@ -36,7 +36,7 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
             title: "The Vault",
             description: "Your financial history in one place.\n\nToggle between 'Amount' to see where money went, and 'Frequency' to see where your habits lie.",
             icon: Icons.history_edu_rounded,
-            accentColor: Color(0xFF10B981), // Emerald Green for Money/History
+            accentColor: Color(0xFF10B981), 
             onDismiss: () {
               Navigator.pop(context);
               SettingsService().setHasSeenVaultOnboarding(true);
@@ -93,10 +93,10 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
       drawer: CoreDrawer(),
       body: Stack(
         children: [
-          // 1. LIGHT BASE
+          
           Container(color: Color(0xFFFDFCFE)),
 
-          // 2. ATMOSPHERIC ORBS (Lavender, Pink, Cyan)
+          
           Positioned(
             top: -100,
             left: -50,
@@ -134,7 +134,7 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
             ),
           ),
 
-          // 3. GLOBAL ATMOSPHERIC BLUR
+          
           Positioned.fill(
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
@@ -147,14 +147,14 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
           CustomScrollView(
             physics: BouncingScrollPhysics(),
             slivers: [
-              // 1. Vanishing Header & Toggle
+              
               SliverAppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 floating: true,
-                snap: true, // Added snap
-                pinned: false, // Mandate: Vanish on scroll
-                centerTitle: true, // Added centerTitle
+                snap: true, 
+                pinned: false, 
+                centerTitle: true, 
                 leading: Builder(
                   builder: (context) => IconButton(
                     icon: Container(
@@ -186,7 +186,7 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // 3D-Glass Smart Toggle (Replacing Title)
+                      
                       _VaultToggle(
                         selectedIndex: _sortOption,
                         onChanged: (val) => setState(() => _sortOption = val),
@@ -198,7 +198,7 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
 
               SliverToBoxAdapter(child: SizedBox(height: 32)),
 
-              // 2. Data Grid
+              
               if (_vaultData == null)
                 SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
               else if (_vaultData!.isEmpty)
@@ -216,8 +216,8 @@ class _ContextArchiveScreenState extends State<ContextArchiveScreen> {
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 16, // Wide spacing
-                      mainAxisSpacing: 24,  // Deep spacing
+                      crossAxisSpacing: 16, 
+                      mainAxisSpacing: 24,  
                       childAspectRatio: 0.85, 
                     ),
                     delegate: SliverChildBuilderDelegate(
@@ -253,13 +253,13 @@ class _VaultData {
   });
 }
 
-// --- NEW COMPONENTS ---
+
 
 class _VaultToggle extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onChanged;
 
-  // Mandate: No const
+  
   _VaultToggle({required this.selectedIndex, required this.onChanged});
 
   @override
@@ -270,9 +270,9 @@ class _VaultToggle extends StatelessWidget {
         final isSharp = mode == AppearanceMode.sharp;
         final double radius = isSharp ? 0.0 : 20.0;
 
-        // Compact Sliding Pill
+        
         return Container(
-          width: 180, // Compact width
+          width: 180, 
           height: 40,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.4),
@@ -284,18 +284,18 @@ class _VaultToggle extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              // The Pill
+              
               AnimatedAlign(
                 duration: Duration(milliseconds: 250),
                 curve: Curves.fastOutSlowIn,
                 alignment: selectedIndex == 0 ? Alignment.centerLeft : Alignment.centerRight,
                 child: Container(
-                  width: 90, // Half width
+                  width: 90, 
                   height: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(radius),
                     gradient: LinearGradient(
-                      colors: [Color(0xFFEC4899), Color(0xFF8B5CF6)], // Pink-Purple Gradient
+                      colors: [Color(0xFFEC4899), Color(0xFF8B5CF6)], 
                     ),
                     boxShadow: [
                        BoxShadow(
@@ -308,7 +308,7 @@ class _VaultToggle extends StatelessWidget {
                 ),
               ),
               
-              // Options (Icons)
+              
               Row(
                 children: [
                   _buildOption(0, Icons.currency_rupee_rounded),
@@ -343,13 +343,13 @@ class _VaultToggle extends StatelessWidget {
 class _VaultCard extends StatelessWidget {
   final _VaultData data;
 
-  // Mandate: No const
+  
   _VaultCard({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    // Determine Icon based on context
-    // Determine Icon based on context
+    
+    
     IconData icon;
     switch (data.context) {
       case 'Home': icon = Icons.home_rounded; break;
@@ -376,12 +376,12 @@ class _VaultCard extends StatelessWidget {
             );
           },
           child: Container(
-            // Jewelry Depth: Deep Shadow
+            
             decoration: BoxDecoration(
                borderRadius: BorderRadius.circular(radius),
                boxShadow: [
                  BoxShadow(
-                   color: Color(0xFF7C3AED).withOpacity(0.12), // Deep Violet shadow
+                   color: Color(0xFF7C3AED).withOpacity(0.12), 
                    offset: Offset(0, 12),
                    blurRadius: 24,
                    spreadRadius: -4,
@@ -391,23 +391,23 @@ class _VaultCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(radius),
               child: BackdropFilter(
-                filter: ui.ImageFilter.blur(sigmaX: 25, sigmaY: 25), // Heavy Glass
+                filter: ui.ImageFilter.blur(sigmaX: 25, sigmaY: 25), 
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.85), // High opacity for solid glass look
+                    color: Colors.white.withOpacity(0.85), 
                     borderRadius: BorderRadius.circular(radius),
-                    // 0.5px Pink-to-Purple Glow is simulated via a Gradient Border Container inside Stack
+                    
                   ),
                   child: Stack(
                     children: [
-                       // The Gradient Border
+                       
                        Positioned.fill(
                          child: Container(
                            decoration: BoxDecoration(
                              borderRadius: BorderRadius.circular(radius),
                              border: Border.all(
-                               color: Color(0xFFD946EF).withOpacity(0.4), // Pinkish-Purple
-                               width: 0.8, // Slightly thicker than 0.5 to be visible on high-res
+                               color: Color(0xFFD946EF).withOpacity(0.4), 
+                               width: 0.8, 
                              ),
                            ),
                          ),
@@ -418,11 +418,11 @@ class _VaultCard extends StatelessWidget {
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         // Category Icon
+                         
                          Container(
                            padding: EdgeInsets.all(12),
                            decoration: BoxDecoration(
-                             color: Color(0xFFF3E8FF), // Light Lilac
+                             color: Color(0xFFF3E8FF), 
                              shape: BoxShape.circle,
                            ),
                            child: Icon(
@@ -434,7 +434,7 @@ class _VaultCard extends StatelessWidget {
                          
                          Spacer(),
                          
-                         // Category Name
+                         
                          Text(
                            data.context,
                            style: GoogleFonts.plusJakartaSans(
@@ -448,7 +448,7 @@ class _VaultCard extends StatelessWidget {
                          
                          SizedBox(height: 4),
                          
-                         // Entry Count
+                         
                          Text(
                            "${data.count} entries",
                            style: GoogleFonts.plusJakartaSans(
@@ -460,13 +460,13 @@ class _VaultCard extends StatelessWidget {
 
                          SizedBox(height: 12),
                          
-                         // Total Spend (Bold & 100% Opacity)
+                         
                          Text(
                            "₹${data.totalSpend.toStringAsFixed(0)}",
                            style: GoogleFonts.plusJakartaSans(
                              fontSize: 20,
-                             fontWeight: FontWeight.w800, // Extra Bold
-                             color: Color(0xFF1A1A1A), // 100% Opacity
+                             fontWeight: FontWeight.w800, 
+                             color: Color(0xFF1A1A1A), 
                              letterSpacing: -0.5,
                            ),
                            maxLines: 1,
@@ -490,19 +490,19 @@ class _VaultCard extends StatelessWidget {
 class _FilteredVaultScreen extends StatelessWidget {
   final _VaultData data;
 
-  // Mandate: No const
+  
   _FilteredVaultScreen({required this.data});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // Transparent Scaffold
+      backgroundColor: Colors.transparent, 
       body: Stack(
         children: [
-          // 1. LIGHT BASE (Standard)
+          
           Container(color: Color(0xFFFDFCFE)),
 
-          // 2. ATMOSPHERIC ORBS (Lavender, Pink, Cyan)
+          
           Positioned(
             top: -100,
             left: -50,
@@ -540,7 +540,7 @@ class _FilteredVaultScreen extends StatelessWidget {
             ),
           ),
 
-          // 3. GLOBAL ATMOSPHERIC BLUR
+          
           Positioned.fill(
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
@@ -550,7 +550,7 @@ class _FilteredVaultScreen extends StatelessWidget {
             ),
           ),
 
-          // CONTENT
+          
           CustomScrollView(
             physics: BouncingScrollPhysics(),
         slivers: [

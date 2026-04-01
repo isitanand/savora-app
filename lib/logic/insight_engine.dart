@@ -4,7 +4,7 @@ import '../data/settings_service.dart';
 import '../data/models/reflection_entry.dart';
 
 class InsightEngine {
-  // Public API
+  
   List<Insight> analyze(List<ReflectionEntry> entries) {
     if (entries.isEmpty) {
       return [_analyzeReflectionFallback()];
@@ -16,43 +16,43 @@ class InsightEngine {
     candidates.addAll(_analyzeEmotions(entries));
     candidates.addAll(_analyzeVelocity(entries));
     candidates.addAll(_analyzeVelocity(entries));
-    candidates.addAll(_analyzeStaticWisdom(entries)); // Add static wisdom for variety
+    candidates.addAll(_analyzeStaticWisdom(entries)); 
     
-    // Always add a fallback reflection for variety (even if confidence is lower)
-    // This ensures rotation logic always has a "Reflection" type to switch to.
+    
+    
     candidates.add(_analyzeReflectionFallback());
     candidates.addAll(_analyzeDelta(entries));
 
-    // Filter valid confidence
+    
     final validCandidates = candidates.where((i) => i.confidence >= 0.6).toList();
 
-    // Sort by confidence descending
+    
     validCandidates.sort((a, b) => b.confidence.compareTo(a.confidence));
 
-    // If no strong insights, return fallback
+    
     if (validCandidates.isEmpty) {
       return [_analyzeReflectionFallback()];
     }
 
-    // V1 Selection Strategy:
-    // Take top 3, shuffle, pick 1
+    
+    
     final topCount = min(3, validCandidates.length);
     final topCandidates = validCandidates.sublist(0, topCount);
     topCandidates.shuffle();
     
-    // Return the chosen one (as a list for potential multi-exposure later)
+    
     return [topCandidates.first];
   }
 
 
-  // --- Analyzers ---
+  
 
   String _getTone() {
-    // reliable access to settings
+    
     try {
       return SettingsService().insightTone.value;
     } catch (e) {
-      return 'Supportive'; // Default
+      return 'Supportive'; 
     }
   }
 
@@ -61,7 +61,7 @@ class InsightEngine {
     final now = DateTime.now();
     final tone = _getTone();
     
-    // 1. Time-of-Day Analysis
+    
     final lateNightEntries = entries.where((e) => e.timestamp.hour >= 21 || e.timestamp.hour < 5).toList();
     if (lateNightEntries.length >= 3 && (lateNightEntries.length / entries.length) >= 0.3) {
       String msg;
@@ -81,7 +81,7 @@ class InsightEngine {
       ));
     }
 
-    // 2. Day-of-Week Analysis
+    
     final weekendEntries = entries.where((e) => e.timestamp.weekday >= 5).toList();
      if (weekendEntries.length >= 5 && (weekendEntries.length / entries.length) >= 0.5) {
       String msg;
@@ -109,7 +109,7 @@ class InsightEngine {
       final now = DateTime.now();
       final tone = _getTone();
 
-      // Group by mood (Normalized)
+      
       final Map<String, List<ReflectionEntry>> moodMap = {};
       for (var e in entries) {
         if (e.mood.isNotEmpty) {
@@ -125,7 +125,7 @@ class InsightEngine {
 
         double moodAvg = moodEntries.map((e) => e.amount).reduce((a, b) => a + b) / moodEntries.length;
 
-        // Detection: High spend correlation
+        
         if (moodAvg > globalAvg * 1.3) {
            String msg;
            if (tone == 'Analytical') {
@@ -144,7 +144,7 @@ class InsightEngine {
           ));
         }
 
-        // Detection: Frequency correlation
+        
         if ((moodEntries.length / entries.length) > 0.4) {
            String msg;
            if (tone == 'Analytical') {
@@ -180,7 +180,7 @@ class InsightEngine {
 
       if (todayEntries.isEmpty) return [];
 
-      // Fix: Use extension properly or simple fold
+      
       double todayTotal = 0;
       for (var e in todayEntries) todayTotal += e.amount;
       
@@ -198,7 +198,7 @@ class InsightEngine {
         for (var e in pastEntries) pastTotal += e.amount;
         final dailyAvg = pastTotal / daysDiff;
 
-        // Check acceleration
+        
         if (todayTotal > dailyAvg * 1.5 && todayTotal > 1000) { 
           String msg;
           if (tone == 'Analytical') {
@@ -218,7 +218,7 @@ class InsightEngine {
         }
       }
       
-      // Burst detection
+      
       if (todayEntries.length >= 4) {
          String msg;
          if (tone == 'Analytical') {
@@ -314,13 +314,13 @@ class InsightEngine {
   }
 
   List<Insight> _analyzeStaticWisdom(List<ReflectionEntry> entries) {
-    // These remain generic/supportive as they are "wisdom", but we can slightly tweak or just leave them.
-    // Ideally wisdom is always supportive/philosophical.
-    // Let's filter slightly based on tone
+    
+    
+    
     final tone = _getTone();
     
     if (tone == 'Analytical') {
-       // Analytical users might prefer facts over quotes
+       
        return [
          "Compound interest is the eighth wonder of the world.",
          "Tracking expense frequency reduces impulse buying by 20%.",
@@ -369,12 +369,12 @@ class InsightEngine {
   }
 }
 
-// Extension helper for sum
+
 extension SumIterable on Iterable<double> {
-  // Dart doesn't have a built-in sum for iterables, using reduce or fold locally
+  
 }
 
-// Extension for fold because I used .folder above by mistake/habit
+
 extension ListFold on List<ReflectionEntry> {
   T folder<T>(T initialValue, T Function(T previousValue, ReflectionEntry element) combine) {
     var value = initialValue;

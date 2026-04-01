@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/data_service.dart';
 import '../data/models/reflection_entry.dart';
 import '../theme/core_theme.dart';
-import '../widgets/expressive_widgets.dart'; // Added for UnifiedProButton
+import '../widgets/expressive_widgets.dart'; 
 
 class ReflectionEntryScreen extends StatefulWidget {
   const ReflectionEntryScreen({super.key});
@@ -18,11 +18,11 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   
-  // Default to null (Empty state)
+  
   String? _selectedMood;
   String? _selectedContext;
   
-  // Data Maps
+  
   final Map<String, IconData> _moodIcons = {
     'Calm': Icons.wb_cloudy_rounded,
     'Tired': Icons.bedtime_rounded,
@@ -30,7 +30,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
     'Focused': Icons.auto_awesome_rounded,
     'Regretful': Icons.broken_image_rounded, 
     'Impulsive': Icons.flash_on_rounded,
-    // "Anxious" removed
+    
   };
   
   final Map<String, IconData> _contextIcons = {
@@ -54,7 +54,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFFDFDFD), 
       appBar: AppBar(
-        // MATCHING INTENT SCREEN: Size 20, w800, Dark Color
+        
         title: Text(
           "NEW ENTRY", 
           style: GoogleFonts.plusJakartaSans(
@@ -92,15 +92,15 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                      Text(
                        "HOW MUCH?",
                        style: GoogleFonts.plusJakartaSans(
-                         fontSize: 12, // Increased from 10
+                         fontSize: 12, 
                          fontWeight: FontWeight.w800,
                          color: Colors.black26, 
-                         letterSpacing: 3.0, // Increased spacing slightly
+                         letterSpacing: 3.0, 
                        ),
                      ),
                      SizedBox(height: 32),
                      
-                     // 2. HERO INPUT ROW (Native Cursor)
+                     
                      IntrinsicWidth(
                        child: Row(
                          mainAxisAlignment: MainAxisAlignment.center,
@@ -112,20 +112,19 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                                 "₹",
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 32,
-                                  fontWeight: FontWeight.w900, // Max Bold
+                                  fontWeight: FontWeight.w900, 
                                   color: Colors.black26, 
                                 ),
                               ),
                             ),
                             SizedBox(width: 16),
                             
-                            // Input with Native TALL PINK CURSOR
+                            
                             IntrinsicWidth(
                               child: TextField(
                                 controller: _amountController,
                                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                                 autofocus: true,
-                                // NATIVE CURSOR CONFIGURATION
                                 cursorColor: Color(0xFFEC4899),
                                 cursorWidth: 3.0,
                                 cursorHeight: 80.0, 
@@ -135,7 +134,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                                   hintText: '0',
                                   hintStyle: GoogleFonts.plusJakartaSans(
                                     fontSize: 90,
-                                    fontWeight: FontWeight.w900, // Max Bold
+                                    fontWeight: FontWeight.w900, 
                                     color: Colors.black.withOpacity(0.06), 
                                     height: 1.0,
                                   ),
@@ -145,7 +144,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                                 ),
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 90,
-                                  fontWeight: FontWeight.w900, // Max Bold
+                                  fontWeight: FontWeight.w900, 
                                   color: Color(0xFF1A1A1A), 
                                   height: 1.0,
                                 ),
@@ -157,7 +156,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                      
                      SizedBox(height: 80), 
                      
-                     // 3. SELECTORS 
+                     
                      Row(
                        children: [
                          Expanded(
@@ -190,7 +189,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                      
                      SizedBox(height: 40),
                      
-                     // 4. REFLECTION 
+                     
                      Container(
                        padding: EdgeInsets.all(24),
                        decoration: BoxDecoration(
@@ -241,7 +240,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
               ),
             ),
             
-            // 5. SAVE BUTTON (UnifiedProButton Match)
+            
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -249,7 +248,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
                  child: UnifiedProButton(
                    text: "Save",
                    onTap: _saveEntry,
-                   // Exact Gradient from Home Screen
+                   
                    gradientColors: [
                       Color(0xFFBB86FC).withOpacity(0.6), 
                       Color(0xFFCF6679).withOpacity(0.6)
@@ -350,14 +349,14 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
     
     final amount = double.tryParse(amountText) ?? 0.0;
     
-    // Save empty string if not selected
+    
     final entry = ReflectionEntry(
       id: Uuid().v4(),
       amount: -amount.abs(),
       currencyCode: 'INR',
       timestamp: DateTime.now(),
-      mood: _selectedMood ?? '', // Empty string if null
-      context: _selectedContext ?? '', // Empty string if null
+      mood: _selectedMood ?? '', 
+      context: _selectedContext ?? '', 
       note: _noteController.text.trim(),
     );
     
@@ -366,7 +365,7 @@ class _ReflectionEntryScreenState extends State<ReflectionEntryScreen> {
   }
 }
 
-// Visual Replica of Main Screen Selection Buttons (Image 2)
+
 class _MainScreenSelector extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -380,10 +379,10 @@ class _MainScreenSelector extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 70, // Tall and Pill-like
+        height: 70, 
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(28), // Highly rounded
+          borderRadius: BorderRadius.circular(28), 
           border: Border.all(color: active ? Color(0xFF8B5CF6).withOpacity(0.3) : Colors.white, width: 1.5),
           boxShadow: [
             BoxShadow(

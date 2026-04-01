@@ -2,7 +2,7 @@ import 'repositories/local_file_repository.dart';
 import 'repositories/repository_interface.dart';
 
 class DataService {
-  // Singleton Pattern
+  
   static final DataService _instance = DataService._internal();
   factory DataService() => _instance;
   DataService._internal();
@@ -13,7 +13,7 @@ class DataService {
   Future<void> init() async {
     if (_isInitialized) return;
     
-    // Choose implementation here (Dependency Injection lite)
+    
     _repository = LocalFileRepository();
     await _repository.init();
     

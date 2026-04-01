@@ -16,12 +16,12 @@ class GlassOnboardingDialog extends StatelessWidget {
     required this.description,
     required this.icon,
     required this.onDismiss,
-    this.accentColor = const Color(0xFF8B5CF6), // Default to Purple
+    this.accentColor = const Color(0xFF8B5CF6), 
   });
 
   @override
   Widget build(BuildContext context) {
-    // 1. Get Appearance Mode
+    
     final isSharp = SettingsService().appearanceMode.value == AppearanceMode.sharp;
     final double radius = isSharp ? 4.0 : 32.0;
 
@@ -32,33 +32,33 @@ class GlassOnboardingDialog extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // 1. Global Blur Backdrop REMOVED (Caused sharp corners)
+          
 
-          // 2. The Gradient Border Container (Shadow Fixed)
+          
           Container(
             constraints: BoxConstraints(maxWidth: 380),
-            padding: EdgeInsets.all(1.5), // Subtle Border Width
+            padding: EdgeInsets.all(1.5), 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(radius),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFFEC4899), // Pink
-                  Color(0xFF8B5CF6), // Purple
+                  Color(0xFFEC4899), 
+                  Color(0xFF8B5CF6), 
                 ],
               ),
               boxShadow: [
                 BoxShadow(
                   color: Color(0xFF8B5CF6).withOpacity(0.25),
-                  blurRadius: 24, // Soft glow
+                  blurRadius: 24, 
                   spreadRadius: 2, 
                   offset: Offset(0, 12),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(radius - 1.5), // Inner radius matches border padding
+              borderRadius: BorderRadius.circular(radius - 1.5), 
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: Container(
@@ -71,21 +71,21 @@ class GlassOnboardingDialog extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Icon Container (White Glass)
+                          
                           Container(
                             padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.6), // Translucent backdrop
+                              color: Colors.white.withOpacity(0.6), 
                               shape: isSharp ? BoxShape.rectangle : BoxShape.circle,
                               borderRadius: isSharp ? BorderRadius.circular(8) : null,
                               boxShadow: [
                                  BoxShadow(
-                                   color: Colors.purple.withOpacity(0.05), // Tinted shadow
+                                   color: Colors.purple.withOpacity(0.05), 
                                    blurRadius: 15,
                                    offset: Offset(0, 8),
                                  )
                               ],
-                              border: Border.all(color: Colors.white, width: 2), // Crisp rim
+                              border: Border.all(color: Colors.white, width: 2), 
                             ),
                             child: ShaderMask(
                               shaderCallback: (bounds) => LinearGradient(
@@ -103,7 +103,7 @@ class GlassOnboardingDialog extends StatelessWidget {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 24,
                               fontWeight: FontWeight.w800,
-                              color: Color(0xFF1F2937), // Dark Grey
+                              color: Color(0xFF1F2937), 
                               height: 1.2,
                               letterSpacing: -0.5,
                             ),
@@ -117,14 +117,14 @@ class GlassOnboardingDialog extends StatelessWidget {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF4B5563), // Medium Grey
+                              color: Color(0xFF4B5563), 
                               height: 1.5,
                             ),
                           ),
                           
                           SizedBox(height: 32),
                           
-                          // Action Button (Gradient Pill)
+                          
                           GestureDetector(
                             onTap: onDismiss,
                             child: Container(
@@ -134,8 +134,8 @@ class GlassOnboardingDialog extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(isSharp ? 4 : 100),
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFFEC4899), // Pink
-                                    Color(0xFF8B5CF6), // Purple
+                                    Color(0xFFEC4899), 
+                                    Color(0xFF8B5CF6), 
                                   ],
                                 ),
                                 boxShadow: [
@@ -152,7 +152,7 @@ class GlassOnboardingDialog extends StatelessWidget {
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w800,
-                                    color: Colors.white, // White Text on Gradient
+                                    color: Colors.white, 
                                     letterSpacing: 0.5,
                                   ),
                                 ),

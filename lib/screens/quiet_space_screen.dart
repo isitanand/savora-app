@@ -7,7 +7,7 @@ import '../widgets/glass_onboarding_dialog.dart';
 import '../data/settings_service.dart';
 
 class QuietSpaceScreen extends StatefulWidget {
-  // Mandate: No const
+  
   QuietSpaceScreen({super.key});
 
   @override
@@ -22,19 +22,19 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    // 4s In, 4s Out = 8s cycle
+    
     _timer = Timer.periodic(Duration(seconds: 4), (timer) {
       if (mounted) {
         setState(() {
           _breatheIn = !_breatheIn;
           if (_breatheIn) {
-            _breathCount++; // Increment on start of new inhale (cycle start)
+            _breathCount++; 
           }
         });
       }
     });
 
-    // Check Onboarding
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!SettingsService().hasSeenQuietSpaceOnboarding.value) {
         showDialog(
@@ -44,7 +44,7 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
             title: "Quiet Space",
             description: "Pause the impulse.\n\nBreathe in your intent, breathe out the urge. Find clarity before you commit.",
             icon: Icons.spa_rounded,
-            accentColor: Color(0xFFD946EF), // Pink/Magenta
+            accentColor: Color(0xFFD946EF), 
             onDismiss: () {
               Navigator.pop(context);
               SettingsService().setHasSeenQuietSpaceOnboarding(true);
@@ -96,10 +96,10 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
       ),
       body: Stack(
         children: [
-          // 1. CREAMY BASE
-          Container(color: Color(0xFFF9FAFB)), // Very light grey base
+          
+          Container(color: Color(0xFFF9FAFB)), 
 
-          // 2. DREAMY ORBS (Pastels)
+          
           Positioned(
             top: -150,
             left: -100,
@@ -108,7 +108,7 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
               height: 500,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFE9D5FF).withOpacity(0.6), // Soft Lilac
+                color: Color(0xFFE9D5FF).withOpacity(0.6), 
               ),
             ),
           ),
@@ -120,7 +120,7 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
               height: 450,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFFFE4E6).withOpacity(0.6), // Rose
+                color: Color(0xFFFFE4E6).withOpacity(0.6), 
               ),
             ),
           ),
@@ -132,17 +132,17 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFCCFBF1).withOpacity(0.5), // Soft Teal
+                color: Color(0xFFCCFBF1).withOpacity(0.5), 
               ),
             ),
           ),
 
-          // 3. SUPER ATMOSPHERIC BLUR (Creamy Effect)
+          
           Positioned.fill(
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
               child: Container(
-                color: Colors.white.withOpacity(0.3), // Milky overlay
+                color: Colors.white.withOpacity(0.3), 
               ),
             ),
           ),
@@ -151,52 +151,48 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 4. THE FROSTED PEARL
+                
                 AnimatedContainer(
                   duration: Duration(seconds: 4),
-                  curve: Curves.easeInOutCubic, // Smoother breathing
+                  curve: Curves.easeInOutCubic, 
                   width: _breatheIn ? 280 : 220, 
                   height: _breatheIn ? 280 : 220,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    // Pearl Gradient: Soft Violet to Pink (More contrast than white)
                     gradient: RadialGradient(
                       colors: [
-                        Color(0xFFF3E8FF), // Light Violet (Center highlight)
-                        Color(0xFFF0ABFC), // Soft Pink/Fuchsia (Edge)
+                        Color(0xFFF3E8FF), 
+                        Color(0xFFF0ABFC), 
                       ],
                       stops: [0.2, 1.0],
-                      center: Alignment(-0.3, -0.3), // Highlight offset
+                      center: Alignment(-0.3, -0.3), 
                     ),
                     boxShadow: [
-                      // Deep Soft Shadow for 3D Pop
                       BoxShadow(
-                        color: Color(0xFFC026D3).withOpacity(_breatheIn ? 0.3 : 0.15), // Deep Purple/Pink Shadow
-                        blurRadius: _breatheIn ? 60 : 30, // Dynamic depth
+                        color: Color(0xFFC026D3).withOpacity(_breatheIn ? 0.3 : 0.15), 
+                        blurRadius: _breatheIn ? 60 : 30, 
                         spreadRadius: 5,
                         offset: Offset(0, 15),
                       ),
-                      // Inner Rim Highlight (Simulated via White Glow)
                       BoxShadow(
                         color: Colors.white.withOpacity(0.9),
                         blurRadius: 15,
-                        offset: Offset(-8, -8), // Top-left rim light
+                        offset: Offset(-8, -8), 
                       ),
                     ],
                   ),
                   child: ClipOval(
                     child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), // Reduced internal frost for clarity
+                      filter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), 
                       child: Stack(
                         children: [
                           Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.15), // Slight gloss
-                              border: Border.all(color: Colors.white.withOpacity(0.6), width: 1.5), // Crisp Rim
+                              color: Colors.white.withOpacity(0.15), 
+                              border: Border.all(color: Colors.white.withOpacity(0.6), width: 1.5), 
                             ),
                           ),
-                          // Crisp Reflection Highlight
                           Positioned(
                              top: 50,
                              left: 60,
@@ -218,16 +214,16 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
 
                 SizedBox(height: 80),
 
-                // 5. Elegant Text Prompt
+                
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 1000),
                   child: Text(
                     _breatheIn ? "Breathe in Intent" : "Breathe out Impulse",
                     key: ValueKey(_breatheIn),
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 22, // Larger
-                      fontWeight: FontWeight.w300, // Light/Elegant
-                      color: Color(0xFF374151), // Dark Grey
+                      fontSize: 22, 
+                      fontWeight: FontWeight.w300, 
+                      color: Color(0xFF374151), 
                       letterSpacing: 2.0,
                     ),
                   ),
@@ -235,13 +231,13 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
 
                 SizedBox(height: 16),
                 
-                // Static Subtext
+                
                 Text(
                   "Finding your center",
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF9CA3AF), // Muted Grey
+                    color: Color(0xFF9CA3AF), 
                     letterSpacing: 4.0, 
                   ),
                 ),
@@ -249,7 +245,7 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
             ),
           ),
 
-          // 6. "I am centered" Button (Minimalist Glass)
+          
           if (_breathCount >= 3)
             Positioned(
               bottom: 60,
@@ -288,7 +284,7 @@ class _QuietSpaceScreenState extends State<QuietSpaceScreen> with SingleTickerPr
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF4B5563), // Muted Text
+                          color: Color(0xFF4B5563), 
                           letterSpacing: 1.0,
                         ),
                       ),

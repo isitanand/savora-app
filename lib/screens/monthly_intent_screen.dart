@@ -19,13 +19,13 @@ class MonthlyIntentScreen extends StatefulWidget {
 }
 
 class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerProviderStateMixin {
-  // 0 = Daily, 1 = Monthly
+  
   int _selectedMode = 0; 
   String? _currentIntent;
   bool _isLoading = true;
   bool _isRedAlert = false; 
 
-  // Pulse Gate Controllers
+  
   late AnimationController _pulseController; 
   late AnimationController _holdController;  
   late Animation<double> _fillAnimation;
@@ -33,13 +33,13 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
   @override
   void initState() {
     super.initState();
-    // 1. Ripple Animation (Continuous)
+    
     _pulseController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 3),
     )..repeat();
 
-    // 2. Hold Animation (User controlled)
+    
     _holdController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2), 
@@ -55,7 +55,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
 
     _loadData();
     
-    // 4. Check Onboarding
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkOnboarding();
     });
@@ -95,26 +95,26 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
   Future<void> _loadData() async {
     final now = DateTime.now();
     
-    // Key Generation Logic
+    
     String key;
     if (_selectedMode == 0) {
-       // Daily Key: YYYY-MM-DD
+       
        key = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     } else {
-       // Monthly Key: YYYY-MM
+       
        key = "${now.year}-${now.month.toString().padLeft(2, '0')}";
     }
     
     final intent = await DataService().repository.getIntent(key);
     String? intentText = intent?.intentText;
     
-    // LOGIC & RED ALERT
+    
     final entries = await DataService().repository.getEntries();
     bool redAlert = false;
 
     if (_selectedMode == 0) {
-      // --- DAILY MODE ---
-      // Filter: Today, Midnight to Midnight
+      
+      
       final todayEntries = entries.where((e) => 
         e.timestamp.year == now.year && 
         e.timestamp.month == now.month && 
@@ -126,7 +126,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
       
       redAlert = dailyLimit > 0 && spentToday > dailyLimit;
     } else {
-      // --- MONTHLY MODE ---
+      
       final monthEntries = entries.where((e) => 
         e.timestamp.year == now.year && 
         e.timestamp.month == now.month
@@ -157,7 +157,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
     }
   }
 
-  // Interaction Logic
+  
   void _startHold() {
     _holdController.forward();
   }
@@ -197,7 +197,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
               content: TextField(
                 controller: controller,
                 autofocus: true,
-                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Color(0xFF1A1A1A), fontWeight: FontWeight.w600), // Mandate: w600
+                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: Color(0xFF1A1A1A), fontWeight: FontWeight.w600), 
                 decoration: InputDecoration(
                   hintText: hint,
                   hintMaxLines: 2,
@@ -218,7 +218,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
     );
 
     if (result != null) {
-      // 1. EXTRACT LIMIT LOGIC
+      
       final numberRegExp = RegExp(r'(\d+)');
       final match = numberRegExp.firstMatch(result);
       if (match != null) {
@@ -232,7 +232,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
         }
       }
 
-    // 2. GENERATE KEY BASED ON MODE
+    
       final now = DateTime.now();
       String key;
       if (isDaily) {
@@ -266,7 +266,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
           ? Center(child: CircularProgressIndicator(color: Color(0xFF7C3AED)))
           : Stack(
               children: [
-                // 1. Atmosphere
+                
                 Positioned(
                   top: -100,
                   left: -50,
@@ -278,7 +278,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _isRedAlert 
-                           ? Color(0xFFEF4444).withOpacity(0.2) // Stronger Red
+                           ? Color(0xFFEF4444).withOpacity(0.2) 
                            : Color(0xFFC026D3).withOpacity(0.15),
                       ),
                     ),
@@ -288,13 +288,13 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                 CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: [
-                    // 2. Vanishing Header
+                    
                     SliverAppBar(
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       expandedHeight: 0, 
                       floating: true,
-                      snap: true, // Ensured snap
+                      snap: true, 
                       pinned: false,
                       centerTitle: true,
                       leading: Builder(
@@ -303,7 +303,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                                color: _isRedAlert 
-                                 ? Color(0xFFEF4444).withOpacity(0.1) // Red Alert tint
+                                 ? Color(0xFFEF4444).withOpacity(0.1) 
                                  : Colors.white.withOpacity(0.5),
                                shape: BoxShape.circle,
                                border: _isRedAlert ? Border.all(color: Color(0xFFEF4444), width: 1.5) : null,
@@ -316,7 +316,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                       title: Text(
                         _selectedMode == 0 ? "Daily Intent" : "Monthly Intent",
                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 20, // Reduced from 24
+                            fontSize: 20, 
                             fontWeight: FontWeight.w800, 
                             color: Color(0xFF1A1A1A),
                          ),
@@ -329,7 +329,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                         children: [
                           SizedBox(height: 24),
                           
-                          // 3. 3D-Glass Segmented Control
+                          
                           _GlassSegmentedControl(
                             selectedIndex: _selectedMode,
                             onChanged: _toggleMode,
@@ -338,7 +338,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                           
                           Spacer(),
                           
-                          // 4. THE PULSE GATE
+                          
                           GestureDetector(
                             onTapDown: (_) => _startHold(),
                             onTapUp: (_) => _endHold(),
@@ -346,19 +346,17 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                // A. Ripples
                                 CustomPaint(
                                   size: Size(300, 300),
                                   painter: _RipplePainter(_pulseController, 
                                     color: _isRedAlert ? Color(0xFFEF4444) : Color(0xFF8B5CF6)),
                                 ),
 
-                                // B. Glass Base (Outer container for the gate)
                                 ValueListenableBuilder<AppearanceMode>(
                                   valueListenable: SettingsService().appearanceMode,
                                   builder: (context, mode, _) {
                                     final isSharp = mode == AppearanceMode.sharp;
-                                    final double radius = isSharp ? 0.0 : 100.0; // 100 for circle (since w=200)
+                                    final double radius = isSharp ? 0.0 : 100.0; 
 
                                     return Container(
                                       width: 200,
@@ -390,7 +388,6 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                                   }
                                 ),
 
-                                // C. Progress Ring (Gradient Fill)
                                 AnimatedBuilder(
                                   animation: _fillAnimation,
                                   builder: (context, child) {
@@ -404,12 +401,11 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                                   },
                                 ),
 
-                                // D. Profile Photo (Center)
                                 ValueListenableBuilder<AppearanceMode>(
                                   valueListenable: SettingsService().appearanceMode,
                                   builder: (context, mode, _) {
                                     final isSharp = mode == AppearanceMode.sharp;
-                                    final double radius = isSharp ? 0.0 : 60.0; // 60 for circle (since height is 120)
+                                    final double radius = isSharp ? 0.0 : 60.0; 
 
                                     return ValueListenableBuilder<String?>(
                                       valueListenable: SettingsService().profileImagePath,
@@ -447,7 +443,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
 
                           SizedBox(height: 48),
 
-                          // 5. Instruction / Current Intent
+                          
                           AnimatedBuilder(
                             animation: _holdController,
                             builder: (context, child) {
@@ -475,7 +471,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
                                     Padding( 
                                       padding: const EdgeInsets.only(top: 8.0),
                                       child: Text(
-                                        "Hold to update ${_selectedMode == 0 ? 'Daily' : 'Monthly'} Intent", // Dynamic Hint
+                                        "Hold to update ${_selectedMode == 0 ? 'Daily' : 'Monthly'} Intent", 
                                         style: GoogleFonts.plusJakartaSans(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
@@ -500,7 +496,7 @@ class _MonthlyIntentScreenState extends State<MonthlyIntentScreen> with TickerPr
   }
 }
 
-// --- WIDGETS ---
+
 
 class _GlassSegmentedControl extends StatelessWidget {
   final int selectedIndex;
@@ -545,8 +541,8 @@ class _GlassSegmentedControl extends StatelessWidget {
                     borderRadius: BorderRadius.circular(radius),
                     gradient: LinearGradient(
                       colors: isRedAlert 
-                        ? [Color(0xFFEF4444), Color(0xFFB91C1C)] // Red Alert Gradient
-                        : [Color(0xFFEC4899), Color(0xFF8B5CF6)], // Pink-Purple Gradient
+                        ? [Color(0xFFEF4444), Color(0xFFB91C1C)] 
+                        : [Color(0xFFEC4899), Color(0xFF8B5CF6)], 
                     ),
                     boxShadow: [
                        BoxShadow(
@@ -715,7 +711,7 @@ class _IntentOnboardingDialog extends StatelessWidget {
   }
 }
 
-// --- PAINTERS ---
+
 
 class _RipplePainter extends CustomPainter {
   final Animation<double> animation;
@@ -726,16 +722,16 @@ class _RipplePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    // Draw 3 expanding rings
+    
     for (int i = 0; i < 3; i++) {
       final double progress = (animation.value + (i / 3.0)) % 1.0;
-      final double radius = 100 + (progress * 50); // Expand from 100 to 150
-      final double opacity = 1.0 - progress; // Fade out
+      final double radius = 100 + (progress * 50); 
+      final double opacity = 1.0 - progress; 
 
       final paint = Paint()
         ..color = color.withOpacity(opacity * 0.3)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2; // Thin sleek lines
+        ..strokeWidth = 2; 
 
       canvas.drawCircle(center, radius, paint);
     }
@@ -766,16 +762,16 @@ class _ProgressRingPainter extends CustomPainter {
       ..shader = ui.Gradient.sweep(
         center,
         [
-          isRed ? Color(0xFFEF4444) : Color(0xFFC026D3), // Start
-          isRed ? Color(0xFFB91C1C) : Color(0xFF8B5CF6), // End
+          isRed ? Color(0xFFEF4444) : Color(0xFFC026D3), 
+          isRed ? Color(0xFFB91C1C) : Color(0xFF8B5CF6), 
         ],
         [0.0, 1.0],
         TileMode.clamp,
-        -pi / 2, // Start at top
-        (-pi / 2) + (progress * 2 * pi), // End angle
+        -pi / 2, 
+        (-pi / 2) + (progress * 2 * pi), 
       );
 
-    // Draw arc
+    
     canvas.drawArc(rect, -pi / 2, progress * 2 * pi, false, paint);
   }
 

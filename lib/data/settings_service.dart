@@ -5,19 +5,19 @@ import '../services/notification_service.dart';
 enum AppearanceMode { soft, sharp }
 
 class SettingsService {
-  // Singleton
+  
   static final SettingsService _instance = SettingsService._internal();
   factory SettingsService() => _instance;
   SettingsService._internal();
 
-  // State
+  
   SharedPreferences? _prefs;
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     _loadSettings();
     try {
-      await CoreNotificationService().init(); // Initialize Notifications
+      await CoreNotificationService().init(); 
     } catch (e) {
       debugPrint("SettingsService: Notification Init Failed: $e");
     }
@@ -39,12 +39,12 @@ class SettingsService {
     userName.value = _prefs!.getString('userName') ?? "Traveler";
     profileImagePath.value = _prefs!.getString('profileImagePath');
     
-    // Load History
+    
     final historyList = _prefs!.getStringList('dailyInsightHistory') ?? [];
     dailyInsightHistory.value = historyList;
     lastInsightDate.value = _prefs!.getString('lastInsightDate');
     
-    // Onboarding Persistence
+    
     hasSeenIntentOnboarding.value = _prefs!.getBool('hasSeenIntentOnboarding') ?? false;
     hasSeenForgeOnboarding.value = _prefs!.getBool('hasSeenForgeOnboarding') ?? false;
     hasSeenVaultOnboarding.value = _prefs!.getBool('hasSeenVaultOnboarding') ?? false;
@@ -52,10 +52,10 @@ class SettingsService {
     hasSeenHomeOnboarding.value = _prefs!.getBool('hasSeenHomeOnboarding') ?? false;
     hasSeenQuietSpaceOnboarding.value = _prefs!.getBool('hasSeenQuietSpaceOnboarding') ?? false;
     hasSeenSystemHubOnboarding.value = _prefs!.getBool('hasSeenSystemHubOnboarding') ?? false;
-    hasSeenFavorsOnboarding.value = _prefs!.getBool('hasSeenFavorsOnboarding') ?? false; // Added
+    hasSeenFavorsOnboarding.value = _prefs!.getBool('hasSeenFavorsOnboarding') ?? false; 
     hasSeenWelcome.value = _prefs!.getBool('hasSeenWelcome') ?? false;
 
-    // System Hub Persistence
+    
     biometricEnabled.value = _prefs!.getBool('biometricEnabled') ?? false;
     velocityAlertsEnabled.value = _prefs!.getBool('velocityAlertsEnabled') ?? true;
     exportFormat.value = _prefs!.getString('exportFormat') ?? 'PDF';
@@ -69,7 +69,7 @@ class SettingsService {
     }
   }
 
-  // State
+  
   final ValueNotifier<AppearanceMode> appearanceMode = ValueNotifier(AppearanceMode.soft);
   final ValueNotifier<String> insightTone = ValueNotifier('Supportive');
   final ValueNotifier<bool> insightsEnabled = ValueNotifier(true);
@@ -86,7 +86,7 @@ class SettingsService {
   final ValueNotifier<String> userName = ValueNotifier("Traveler");
   final ValueNotifier<String?> profileImagePath = ValueNotifier(null);
   
-  // Onboarding Flags
+  
   final ValueNotifier<bool> hasSeenIntentOnboarding = ValueNotifier(false);
   final ValueNotifier<bool> hasSeenForgeOnboarding = ValueNotifier(false);
   final ValueNotifier<bool> hasSeenVaultOnboarding = ValueNotifier(false);
@@ -94,18 +94,18 @@ class SettingsService {
   final ValueNotifier<bool> hasSeenHomeOnboarding = ValueNotifier(false);
   final ValueNotifier<bool> hasSeenQuietSpaceOnboarding = ValueNotifier(false);
   final ValueNotifier<bool> hasSeenSystemHubOnboarding = ValueNotifier(false);
-  final ValueNotifier<bool> hasSeenFavorsOnboarding = ValueNotifier(false); // Added
+  final ValueNotifier<bool> hasSeenFavorsOnboarding = ValueNotifier(false); 
   final ValueNotifier<bool> hasSeenWelcome = ValueNotifier(false);
   
-  // System Hub
+  
   final ValueNotifier<bool> biometricEnabled = ValueNotifier(false);
   final ValueNotifier<TimeOfDay> dailyReminderTime = ValueNotifier(const TimeOfDay(hour: 21, minute: 0));
   final ValueNotifier<bool> velocityAlertsEnabled = ValueNotifier(true);
-  final ValueNotifier<String> exportFormat = ValueNotifier('PDF'); // Always PDF
+  final ValueNotifier<String> exportFormat = ValueNotifier('PDF'); 
   final ValueNotifier<double> hapticStrength = ValueNotifier(0.5);
   final ValueNotifier<bool> privacyMode = ValueNotifier(false);
 
-  // Actions
+  
   void setUserName(String name) {
     userName.value = name;
     _prefs?.setString('userName', name);
@@ -155,7 +155,7 @@ class SettingsService {
     _prefs?.setBool('hasSeenSystemHubOnboarding', value);
   }
 
-  void setHasSeenFavorsOnboarding(bool value) { // Added
+  void setHasSeenFavorsOnboarding(bool value) { 
     hasSeenFavorsOnboarding.value = value;
     _prefs?.setBool('hasSeenFavorsOnboarding', value);
   }
@@ -165,7 +165,7 @@ class SettingsService {
     _prefs?.setBool('hasSeenWelcome', value);
   }
 
-  // --- Insight & History Actions ---
+  
 
   void setLastInsightIndex(int index) {
     lastInsightIndex.value = index;
@@ -207,7 +207,7 @@ class SettingsService {
     }
   }
 
-  // --- Preference Actions ---
+  
 
   void setTone(String tone) {
     insightTone.value = tone;
@@ -225,10 +225,10 @@ class SettingsService {
   }
 
   void setLimit(double amount) {
-    // Context-aware: Using for Monthly Limit primarily, or generic limit setting
-    // But based on usage in ProfileScreen, it seems to map to monthly limit usually.
-    // However, MonthlyIntentScreen calls explicit setMonthlyLimit. 
-    // ProfileScreen calls setLimit. Let's assume Profile updates Monthly Limit by default.
+    
+    
+    
+    
     setMonthlyLimit(amount); 
   }
   
@@ -247,7 +247,7 @@ class SettingsService {
     _prefs?.setInt('appearanceMode', mode.index);
   }
 
-  // --- System Hub Actions ---
+  
 
   void setBiometric(bool enabled) {
     biometricEnabled.value = enabled;

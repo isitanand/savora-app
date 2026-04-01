@@ -50,21 +50,21 @@ class _DataTransparencyScreenState extends State<DataTransparencyScreen> {
 
     if (confirmed == true) {
       await DataService().repository.deleteAll();
-      // Silent reload. No snackbar.
+      
       _loadData();
     }
   }
 
   Future<void> _handleCopyJson(List<ReflectionEntry> entries) async {
-    // Basic JSON dump for verification
+    
     final jsonString = entries.map((e) => e.toJson()).toString();
     await Clipboard.setData(ClipboardData(text: jsonString));
-    // Small toast is acceptable here for technical action feedback, 
-    // but per strict rules, let's keep it silent or minimal. 
-    // User requested COPY action, so feedback is expected? 
-    // Plan says "Copy JSON to Clipboard" action. 
-    // "No celebratory feedback after *deletion*". Copying is different.
-    // I will show a very neutral SnackBar for Copy Only.
+    
+    
+    
+    
+    
+    
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -89,7 +89,7 @@ class _DataTransparencyScreenState extends State<DataTransparencyScreen> {
           
           return Column(
             children: [
-              // Control Bar (Functional)
+              
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: CoreTheme.spacingWrapper,
@@ -122,9 +122,9 @@ class _DataTransparencyScreenState extends State<DataTransparencyScreen> {
                 ),
               ),
               
-              const Divider(height: 1), // Subtle hairline
+              const Divider(height: 1), 
               
-              // Log List (Technical Archive)
+              
               Expanded(
                 child: ListView.separated(
                   itemCount: entries.length,
@@ -139,14 +139,14 @@ class _DataTransparencyScreenState extends State<DataTransparencyScreen> {
                         vertical: 8,
                       ),
                       title: Text(
-                        'ID: ...${entry.id.substring(entry.id.length - 8)}', // Abstract ID
+                        'ID: ...${entry.id.substring(entry.id.length - 8)}', 
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontFamily: 'Courier', 
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       subtitle: Text(
-                        'Stored Entry', // No values shown in summary
+                        'Stored Entry', 
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
                     );

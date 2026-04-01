@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; 
 import 'dart:ui' as ui;
-import 'package:google_fonts/google_fonts.dart'; // Added
+import 'package:google_fonts/google_fonts.dart'; 
 import '../data/data_service.dart';
 import '../data/models/reflection_entry.dart';
 import '../theme/core_theme.dart';
@@ -13,9 +13,9 @@ import 'entry_detail_screen.dart';
 import 'reflection_entry_screen.dart';
 import 'profile_screen.dart'; 
 import '../data/settings_service.dart';
-import '../logic/insight_engine.dart'; // Added
-import '../data/models/insight_model.dart'; // Added
-import '../widgets/insight_card.dart'; // Added
+import '../logic/insight_engine.dart'; 
+import '../data/models/insight_model.dart'; 
+import '../widgets/insight_card.dart'; 
 import '../widgets/glass_onboarding_dialog.dart';
 
 class DailyStreamScreen extends StatefulWidget {
@@ -29,8 +29,8 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
   final PageController _pageController = PageController();
   int _activeGraphPage = 0;
 
-  int _insightType = 0; // 0: Budget, 1: Rhythm, 2: Pattern, 3: Motivation
-  List<Insight> _currentInsights = []; // Added for Insight System
+  int _insightType = 0; 
+  List<Insight> _currentInsights = []; 
 
   bool _isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
@@ -41,15 +41,15 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
     super.initState();
     _loadEntries();
     
-    // Pick a DIFFERENT insight style than last time
+    
     final last = SettingsService().lastInsightIndex.value;
-    _insightType = (last + 1) % 4; // Guaranteed simple rotation [0,1,2,3]
+    _insightType = (last + 1) % 4; 
     SettingsService().setLastInsightIndex(_insightType);
 
-    // Listen to Tone Changes
+    
     SettingsService().insightTone.addListener(_onToneChanged);
 
-    // Check Onboarding
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!SettingsService().hasSeenHomeOnboarding.value) {
         showDialog(
@@ -58,8 +58,8 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
           builder: (context) => GlassOnboardingDialog(
             title: "Your Daily Stream",
             description: "A living record of your financial flow.\n\nEvery entry tells a story. Pull down to refresh, tap to explore.",
-            icon: Icons.water_drop_rounded, // or stream_rounded
-            accentColor: Color(0xFFE91E63), // Pink Accent
+            icon: Icons.water_drop_rounded, 
+            accentColor: Color(0xFFE91E63), 
             onDismiss: () {
               Navigator.pop(context);
               SettingsService().setHasSeenHomeOnboarding(true);
@@ -82,18 +82,18 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
   }
 
   void _loadEntries() {
-    // UPDATED: Chain analysis after fetching
+    
     final future = DataService().repository.getEntries();
     setState(() {
       _entriesFuture = future.then((entries) {
         if (mounted) {
-          // Analyze ALL entries for deep patterns
-          // Analyze ALL entries for deep patterns
+          
+          
           final allInsights = InsightEngine().analyze(entries);
           
-          // STRICT ROTATION LOGIC
-          // 1. Check if we need to reset history (New Day Logic)
-          final lastDateStr = SettingsService().lastInsightDate.value; // Need to add this to SettingsService first
+          
+          
+          final lastDateStr = SettingsService().lastInsightDate.value; 
           final todayStr = DateTime.now().toIso8601String().split('T').first;
           
           if (lastDateStr != todayStr) {
@@ -105,25 +105,25 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
           Insight? selected;
 
           if (allInsights.isNotEmpty) {
-             // 2. Filter out already seen insights for today
+             
              var candidates = allInsights.where((i) => !history.contains(i.message)).toList();
              
-             // 3. Fallback: If we've seen everything, reset history to start fresh loop (or just show random)
+             
              if (candidates.isEmpty) {
                 SettingsService().clearHistory();
                 candidates = allInsights; 
              }
              
-             // 4. Select random candidate to ensure variety even among fresh batch
-             // (Or stick to type prioritisation if preferred, but random is safer for "not same twice")
+             
+             
              if (candidates.isNotEmpty) {
                selected = candidates[DateTime.now().millisecond % candidates.length];
              }
              
-             // 5. Save this new selection
+             
              if (selected != null) {
                 SettingsService().addToHistory(selected.message);
-                SettingsService().setLastInsightMessage(selected.message); // Still useful for reference
+                SettingsService().setLastInsightMessage(selected.message); 
                 _currentInsights = [selected];
              }
           }
@@ -135,28 +135,28 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
 
 
 
-  DateTime _viewDate = DateTime.now(); // Mandate: _viewDate for view state
-  double globalNetFlow = 0.0; // Mandate: Defined variable
+  DateTime _viewDate = DateTime.now(); 
+  double globalNetFlow = 0.0; 
 
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: _viewDate, // Use _viewDate
+      initialDate: _viewDate, 
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: Color(0xFF9C27B0), // Purple
+              primary: Color(0xFF9C27B0), 
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black,
-              secondary: Color(0xFFE91E63), // Pink accent
+              secondary: Color(0xFFE91E63), 
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFF9C27B0), // Button text color
+                foregroundColor: Color(0xFF9C27B0), 
               ),
             ),
           ),
@@ -190,40 +190,27 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
       e.timestamp.month == currentMonth.month
     ).toList();
 
-    final netFlow = monthEntries.where((e) => e.amount < 0).fold<double>(0, (sum, e) => sum + e.amount.abs());
-    
-    // Mandate: Fix logic to use .map().reduce() as requested
-    // Mandate: Update: Exclude 'Favor' context (Assets != Expenses)
-    
-    // 1. Filter out Favors from financial totals (but keep in the list for display if needed? 
-    //    Actually, method receives 'entries'. filtering strictly for calcs.)
     final calcEntries = entries.where((e) => e.context != 'Favor').toList();
     final calcMonthEntries = monthEntries.where((e) => e.context != 'Favor').toList();
 
-    // Mandate: Global Net Flow (Sum of all NON-FAVOR entries)
-    final globalNetFlow = calcEntries.isEmpty 
-        ? 0.0 
-        : calcEntries.map((e) => e.amount).reduce((a, b) => a + b);
+    final totalExpenses = calcMonthEntries.where((e) => e.amount < 0).fold<double>(0, (sum, e) => sum + e.amount.abs());
+    final totalIncome = calcMonthEntries.where((e) => e.amount > 0).fold<double>(0, (sum, e) => sum + e.amount);
 
-    // Mandate: Total Spent calculation based on _viewDate (excluding Favors)
     final viewDateEntries = calcEntries.where((e) => _isSameDay(e.timestamp, _viewDate)).toList();
     final totalSpentToday = viewDateEntries.isEmpty 
         ? 0.0 
         : viewDateEntries.map((e) => e.amount.abs()).reduce((a, b) => a + b);
 
-    final weeklyData = _calculateWeeklyData(calcEntries); // Also update weekly data
+    final weeklyData = _calculateWeeklyData(calcEntries); 
 
     return <String, dynamic>{
-      'netFlow': globalNetFlow, 
-      'entryCount': monthEntries.length, // Total count can still include favors? User might want to see them in list. 
-                                         // But for financials, we use excluded.
-                                         // Let's keep entryCount as "Activity Count" (includes favors).
-      'dailyFlow': _generateCumulativeTrend(entries), // visual trend might still show them? Maybe exclude?
-                                                      // Let's exclude from trend for consistency.
+      'entryCount': monthEntries.length, 
+      'dailyFlow': _generateCumulativeTrend(entries), 
       'totalSpentToday': totalSpentToday,
       'thisWeek': weeklyData['thisWeek'],
       'lastWeek': weeklyData['lastWeek'],
-      'currentMonthSpend': globalNetFlow.abs(), 
+      'totalExpenses': totalExpenses,
+      'totalIncome': totalIncome,
     };
   }
 
@@ -249,14 +236,14 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
     return {'thisWeek': thisWeek, 'lastWeek': lastWeek};
   }
 
-  // Mandate: Generate Monthly Velocity Data (Current Month Only, Day 1-31)
+  
   List<double> _generateCumulativeTrend(List<ReflectionEntry> entries) {
     print('--- GENERATING TREND DEBUG ---');
     final now = DateTime.now();
-    // Use local time for consistent day matching
+    
     final currentMonth = DateTime(now.year, now.month);
     
-    // Filter entries for CURRENT MONTH only
+    
     final monthEntries = entries.where((e) => 
       e.timestamp.year == currentMonth.year && 
       e.timestamp.month == currentMonth.month
@@ -264,12 +251,12 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
     
     print('Found ${monthEntries.length} entries for ${now.month}/${now.year}');
     
-    // Create array for all 31 days
+    
     final dailySpending = List<double>.filled(31, 0.0);
     
-    // Calculate daily spending for each day
+    
     for (var entry in monthEntries) {
-      final dayIndex = entry.timestamp.day - 1; // Day 1 = index 0
+      final dayIndex = entry.timestamp.day - 1; 
       
       if (dayIndex >= 0 && dayIndex < 31) {
         dailySpending[dayIndex] += entry.amount.abs();
@@ -283,8 +270,8 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
   }
 
   String? _calculateSpendingMood(List<ReflectionEntry> entries) {
-    // Mandate: Calculate most frequent mood associated with spending
-    // Assumption: All entries are spending
+    
+    
     final expenses = entries; 
     if (expenses.isEmpty) return null;
 
@@ -309,7 +296,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
     return "Most spending happened when you felt $maxMood.";
   }
 
-  // Helpers removed per mandate
+  
 
 
   @override
@@ -327,7 +314,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
        final monthlyLimit = SettingsService().monthlyLimit.value;
 
        final appearance = SettingsService().appearanceMode.value;
-       final tone = SettingsService().insightTone.value; // Mandate: Get Tone
+       final tone = SettingsService().insightTone.value; 
     
     return Scaffold(
       drawer: CoreDrawer(),
@@ -335,7 +322,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
           text: "New Entry",
           onTap: _navigateToAdd,
           gradientColors: [
-             Color(0xFFBB86FC).withOpacity(0.6), // Mandate: Specific Gradient
+             Color(0xFFBB86FC).withOpacity(0.6), 
              Color(0xFFCF6679).withOpacity(0.6)
           ],
         ),
@@ -343,13 +330,13 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
 
       body: Stack(
         children: [
-          // 1. LIGHT BASE (Mandate)
+          
           Container(
-            color: Color(0xFFFDFCFE), // Off-white
+            color: Color(0xFFFDFCFE), 
           ),
           
-          // 2. ATMOSPHERIC ORBS (Lavender, Pink, Cyan)
-          // Top-Left: Lavender
+          
+          
           Positioned(
             top: -100,
             left: -50,
@@ -363,7 +350,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
             ),
           ),
           
-          // Right-Center: Soft Pink
+          
           Positioned(
             top: 200,
             right: -100,
@@ -377,7 +364,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
             ),
           ),
 
-          // Bottom-Left: Cyan
+          
           Positioned(
             bottom: -50,
             left: -50,
@@ -391,51 +378,57 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
             ),
           ),
 
-          // 3. GLOBAL ATMOSPHERIC BLUR
+          
           Positioned.fill(
             child: BackdropFilter(
-              filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50), // Mandate: 50
+              filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50), 
               child: Container(
-                color: Colors.white.withOpacity(0.1), // Subtle white wash
+                color: Colors.white.withOpacity(0.1), 
               ),
             ),
           ),
-          // CONTENT
+          
           FutureBuilder<List<ReflectionEntry>>(
             future: _entriesFuture,
             builder: (context, snapshot) {
               final entries = snapshot.data ?? [];
-              final displayDate = _viewDate; // Mandate: Use _viewDate state
+              final displayDate = _viewDate; 
               
-              // Mandate: Update Global Net Flow Logic (Safe calculation)
-              // We calculate here but DO NOT setState() to avoid build error.
-              // Instead, we assign to a local variable that SHADOWS the class member if needed,
-              // or updates the class member if not building? No, side-effects bad.
-              // We will just define a local variable 'globalNetFlow' for the UI to use.
-              // But to satisfy "Ensure globalNetFlow references are backed by a defined variable",
-              // we have the class member. We will use a local final variable here:
+              
+              
+              
+              
+              
+              
+              
               final globalNetFlowVal = entries.isEmpty 
                   ? 0.0 
-                  : entries.map((e) => e.amount).reduce((a, b) => a + b); // Signed Sum
+                  : entries.map((e) => e.amount).reduce((a, b) => a + b); 
               
               final financials = _calculateFinancials(entries, displayDate);
               
-              final netFlow = financials['netFlow'] as double;
               final entryCount = financials['entryCount'] as int;
               final dailyFlow = financials['dailyFlow'] as List<double>;
               final totalSpentToday = financials['totalSpentToday'] as double;
               final thisWeek = financials['thisWeek'] as List<double>;
               final lastWeek = financials['lastWeek'] as List<double>;
-              final currentMonthSpend = financials['currentMonthSpend'] as double;
-              final remainingAmount = monthlyLimit - currentMonthSpend; // Mandate: Remaining Logic
+              final totalExpenses = financials['totalExpenses'] as double;
+              final totalIncome = financials['totalIncome'] as double;
               
-            // Mandate: Calculate Insight early
-            // Tone logic:
+              
+              final nowDate = DateTime.now();
+              final daysInMonth = DateUtils.getDaysInMonth(nowDate.year, nowDate.month);
+              final daysLeft = daysInMonth - nowDate.day;
+              final remainingAmount = monthlyLimit - totalExpenses;
+              final dailyRequired = daysLeft > 0 ? (remainingAmount / daysLeft) : 0.0;
+              
+            
+            
             final tone = SettingsService().insightTone.value;
             String insightText = "";
             if (SettingsService().insightsEnabled.value) {
                if (tone == 'Supportive') {
-                 insightText = "You're doing great! Keep tracking."; // Simplified placeholder logic
+                 insightText = "You're doing great! Keep tracking."; 
                } else if (tone == 'Analytical') {
                  insightText = "Spending velocity: Normal. Trend: Stable.";
                } else {
@@ -445,20 +438,20 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
 
             final spendingInsight = _calculateSpendingMood(entries);
 
-            // Insights Logic Removed per mandate
+            
 
 
-            final displayDateFixed = displayDate; // Alias
+            final displayDateFixed = displayDate; 
             final displayedEntries = entries.where((e) => _isSameDay(e.timestamp, displayDateFixed)).toList();
             
-            // Rhythm Data (Last 7 Days)
+            
             final now = DateTime.now();
-            // final last7Days = List.generate(7, (i) => now.subtract(Duration(days: 6 - i)));
+            
 
             return CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-                // Transparent AppBar for structure
+                
                 SliverAppBar(
                   floating: false,
                   pinned: false,
@@ -467,16 +460,16 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                   toolbarHeight: 0,
                 ),
                 
-                // ---------------------------------------------------------
-                // SECTION 1: FINANCIAL HERO
-                // ---------------------------------------------------------
+                
+                
+                
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    padding: EdgeInsets.fromLTRB(20, 24, 20, 4), // Added top breathing space and slight bottom buffer
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Top Bar: Menu + Profile
+                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -527,7 +520,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                   ),
                 ),
                         
-                // TOTAL NET FLOW (Mandate: Restored to match perfect layout)
+                
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   sliver: SliverToBoxAdapter(
@@ -535,7 +528,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Total Net Flow",
+                          totalIncome > 0 ? "Current Balance" : "Total Spending This Month",
                           style: TextStyle(
                             color: Color(0xFF1A1A1A).withOpacity(0.6),
                             fontSize: 16,
@@ -544,7 +537,9 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                         ),
                         SizedBox(height: 4), 
                         Text(
-                          '₹${netFlow.abs().toStringAsFixed(2)}',
+                          totalIncome > 0 
+                              ? '₹${(totalIncome - totalExpenses).toStringAsFixed(2)}'
+                              : '₹${totalExpenses.toStringAsFixed(0)}',
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 42, 
                             fontWeight: FontWeight.w700,
@@ -552,62 +547,163 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                             letterSpacing: -1.0,
                           ),
                         ),
-                        SizedBox(height: 8), // Spacing
-                        RichText(
-                          text: TextSpan(
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 14,
-                              color: Color(0xFF1A1A1A),
-                              letterSpacing: 1.1, // Mandate: 1.1 spacing
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "Remaining: ",
-                                style: TextStyle(fontWeight: FontWeight.w600), // Mandate: w600
-                              ),
-                              TextSpan(
-                                text: "₹${remainingAmount.toStringAsFixed(2)}",
-                                style: TextStyle(fontWeight: FontWeight.w700), // Mandate: w700
-                              ),
-                            ],
-                          ),
-                        ),
+                        if (_currentInsights.isNotEmpty) ...[
+                          SizedBox(height: 16),
+                          InsightCard(insight: _currentInsights.first),
+                        ],
                       ],
                     ),
                   ),
                 ),
                 
-                // NEW INSIGHTS SYSTEM
-                if (_currentInsights.isNotEmpty)
-                   SliverPadding(
-                     // UPDATED Spacing: More top padding (16) to clear the header visually
-                     padding: EdgeInsets.fromLTRB(24, 16, 24, 4), 
-                     sliver: SliverToBoxAdapter(
-                       child: InsightCard(insight: _currentInsights.first),
-                     ),
-                   ),
+                if (entries.isNotEmpty) ...[
+                  SliverToBoxAdapter(child: SizedBox(height: 32)),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 250,
+                            child: PageView(
+                              controller: _pageController,
+                              onPageChanged: (index) {
+                                setState(() {
+                                  _activeGraphPage = index;
+                                });
+                              },
+                              children: [
+                                // Page 1: Monthly Trend
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(32),
+                                    child: BackdropFilter(
+                                      filter: ui.ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                                      child: Container(
+                                        clipBehavior: Clip.antiAlias,
+                                        width: double.infinity,
+                                        padding: EdgeInsets.fromLTRB(20, 24, 20, 16),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(32),
+                                          border: Border.all(color: Colors.white, width: 1.5),
+                                          boxShadow: [
+                                            BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 20, offset: Offset(0, 10)),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Monthly Trend",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xFF1A1A1A),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Day 1 - 31",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xFF1A1A1A).withOpacity(0.4),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 24),
+                                            Expanded(
+                                              child: InsightGraph(
+                                                data: dailyFlow.isEmpty ? [0] : dailyFlow,
+                                                color: Color(0xFFEC4899),
+                                                targetLimit: monthlyLimit, 
+                                                todayIndex: now.day - 1,
+                                                isMonthly: true,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // Page 2: Weekly Spend
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(20, 24, 20, 16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(32),
+                                      border: Border.all(color: Colors.white, width: 1.5),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Weekly Spend",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFF1A1A1A),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Expanded(child: WeeklyBarChart(thisWeek: thisWeek, lastWeek: lastWeek)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(2, (index) {
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                height: 6,
+                                width: _activeGraphPage == index ? 24 : 8,
+                                decoration: BoxDecoration(
+                                  color: _activeGraphPage == index 
+                                      ? Color(0xFF8B5CF6) 
+                                      : Colors.grey.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
 
-                SliverToBoxAdapter(child: SizedBox(height: 24)), // Mandate: 24 Margin
-
-                // CHART SECTION or EMPTY STATE
-                if (entries.length < 3)
+                if (entries.isEmpty) ...[
                    SliverToBoxAdapter(
                      child: Container(
                        height: 200,
                        margin: EdgeInsets.symmetric(horizontal: 24),
                        decoration: BoxDecoration(
-                         color: Colors.white.withValues(alpha: 0.3),
+                         color: Colors.white.withOpacity(0.3),
                          borderRadius: BorderRadius.circular(24),
-                         border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
+                         border: Border.all(color: Colors.white.withOpacity(0.5)),
                        ),
                        child: Center(
                          child: Padding(
                            padding: EdgeInsets.all(24),
                            child: Text(
-                             "Insights will appear once you log 3 moments. What influenced your spending today?",
+                             "No entries yet.\nAdd your first stream to start tracking.",
                              textAlign: TextAlign.center,
                              style: GoogleFonts.plusJakartaSans(
-                               color: CoreTheme.deepInk.withValues(alpha: 0.6),
+                               color: CoreTheme.deepInk.withOpacity(0.6),
                                fontSize: 14,
                                fontWeight: FontWeight.w600,
                              ),
@@ -616,129 +712,13 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                        ),
                      ),
                    )
-                else
-                SliverPadding(
-                   padding: EdgeInsets.symmetric(horizontal: 20),
-                   sliver: SliverToBoxAdapter(
-                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(32),
-                        child: BackdropFilter(
-                          filter: ui.ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                          child: Container(
-                            clipBehavior: Clip.antiAlias,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(32),
-                              border: Border.all(color: Colors.white, width: 1.5),
-                              boxShadow: [
-                                BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 20, offset: Offset(0, 10)),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  // View Indicator Bar (Transparent to Violet)
-                                  Container(
-                                    height: 4,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          _activeGraphPage == 0 ? Color(0xFFEC4899) : Colors.transparent, // Pink
-                                          _activeGraphPage == 1 ? Color(0xFF8B5CF6) : Colors.transparent, // Purple
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(24, 24, 24, 0), // Increased global padding
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onLongPress: () {
-                                          showDialog(
-                                            context: context, 
-                                            builder: (ctx) => AlertDialog(
-                                              title: Text("Graph Debug Data"),
-                                              content: SingleChildScrollView(
-                                                child: Text(
-                                                  "Month Entries: ${entries.where((e) => e.timestamp.month == DateTime.now().month && e.timestamp.year == DateTime.now().year).length}\n\n"
-                                                  "Daily Data:\n" + 
-                                                  _generateCumulativeTrend(entries)
-                                                    .asMap().entries
-                                                    .where((e) => e.value > 0)
-                                                    .map((e) => "Day ${e.key + 1}: ${e.value}")
-                                                    .join("\n")
-                                                ),
-                                              ),
-                                              actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: Text("Close"))],
-                                            )
-                                          );
-                                        },
-                                        child: Text(
-                                          _activeGraphPage == 0 ? "Monthly Velocity" : "Weekly Spend",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xFF1A1A1A),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        _activeGraphPage == 0 ? "Day 1 - 31" : "Comparison",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF1A1A1A).withOpacity(0.4),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 24),
-                                SizedBox(
-                                  height: 200, 
-                                  child: PageView(
-                                    controller: _pageController,
-                                    onPageChanged: (i) => setState(() => _activeGraphPage = i),
-                                    children: [
-                                      // VIEW 1: MONTHLY VELOCITY
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12),
-                                        child: InsightGraph(
-                                          data: dailyFlow.isEmpty ? [0] : dailyFlow,
-                                          color: Color(0xFFEC4899),
-                                          targetLimit: monthlyLimit, // Mandate: Pass actual monthly limit
-                                          todayIndex: now.day - 1,
-                                          isMonthly: true,
-                                        ),
-                                      ),
-                                      // VIEW 2: WEEKLY BAR CHART
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12),
-                                        child: WeeklyBarChart(
-                                          thisWeek: thisWeek,
-                                          lastWeek: lastWeek,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                     ),
-                   ),
-                 ),
+                ],
 
-                SliverToBoxAdapter(child: SizedBox(height: 24)), // Mandate: 24 Margin
+                SliverToBoxAdapter(child: SizedBox(height: 24)), 
 
-                // METRIC CARDS (Reference-aligned)
+                
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Mandate: 12.0 vertical
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), 
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       children: [
@@ -761,7 +741,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                               iconColor: Color(0xFFEC4899),
                               label: "Highest Entry",
                               value: entries.isEmpty ? "₹0" : "₹${entries.map((e) => e.amount.abs()).reduce((a, b) => a > b ? a : b).toStringAsFixed(0)}",
-                              subtitle: "Tap for details", // Updated subtitle to indicate action
+                              subtitle: "Tap for details", 
                             ),
                           ),
                         ),
@@ -771,8 +751,8 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                             icon: Icons.receipt_long_rounded,
                             iconColor: Color(0xFF8B5CF6),
                             label: "Total Entries",
-                            value: "${entries.where((e) => e.timestamp.month == DateTime.now().month && e.timestamp.year == DateTime.now().year).length}", // Mandate: This month only
-                            subtitle: "This month", // Mandate: Changed from "Lifetime"
+                            value: "${entries.where((e) => e.timestamp.month == DateTime.now().month && e.timestamp.year == DateTime.now().year).length}", 
+                            subtitle: "This month", 
                           ),
                         ),
                       ],
@@ -781,94 +761,135 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                 ),
 
 
-                // ---------------------------------------------------------
-                // SECTION 3: DAILY STREAM (Total Spent Header)
-                // ---------------------------------------------------------
-                // ---------------------------------------------------------
-                // SECTION 3: TARGET PROGRESS BAR (Replacing Net Flow)
-                // ---------------------------------------------------------
+                
+                
+                
+                
+                
+                
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  sliver: SliverToBoxAdapter(
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         // Progress Bar
-                         ClipRRect(
-                           borderRadius: BorderRadius.circular(4),
-                           child: Container(
-                             height: 4,
-                             width: double.infinity,
-                             child: LayoutBuilder(
-                               builder: (context, constraints) {
-                                 final double rawProgress = (monthlyLimit > 0) ? (currentMonthSpend / monthlyLimit) : 0.0;
-                                 final double progress = rawProgress.clamp(0.0, 1.0);
-                                 final bool isOverLimit = rawProgress > 1.0;
-
-                                 return Stack(
-                                   children: [
-                                     Container(color: Colors.grey.withValues(alpha: 0.1)), // Track
-                                     FractionallySizedBox(
-                                       widthFactor: progress,
-                                       child: Container(
-                                         decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: isOverLimit 
-                                                ? [Color(0xFFFF512F), Color(0xFFDD2476)] // Vibrant Red-to-Orange (Red Alert)
-                                                : [Color(0xFFEC4899), Color(0xFF8B5CF6)], // Pink to Purple Gradient
-                                            ),
-                                         ),
-                                       ),
-                                     ),
-                                   ],
-                                 );
-                               },
+                   padding: EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
+                   sliver: SliverToBoxAdapter(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: Colors.white, width: 1.5),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                           Text(
+                             "Savings Goal",
+                             style: GoogleFonts.plusJakartaSans(
+                               fontSize: 16,
+                               fontWeight: FontWeight.w700,
+                               color: Color(0xFF1A1A1A),
                              ),
                            ),
-                         ),
-                         SizedBox(height: 8),
-                         // Sub-labels
-                         Builder(
-                           builder: (context) {
-                             final bool isOverLimit = currentMonthSpend > monthlyLimit;
-                             final double overage = (currentMonthSpend - monthlyLimit).abs();
-                             
-                             return Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                 Text(
-                                   "₹${currentMonthSpend.toStringAsFixed(0)} spent",
-                                   style: GoogleFonts.plusJakartaSans(
-                                     fontSize: 10,
-                                     fontWeight: FontWeight.w300,
-                                     color: CoreTheme.deepInk.withValues(alpha: 0.6),
+                           SizedBox(height: 16),
+                           
+                           ClipRRect(
+                             borderRadius: BorderRadius.circular(4),
+                             child: Container(
+                               height: 8,
+                               width: double.infinity,
+                               child: LayoutBuilder(
+                                 builder: (context, constraints) {
+                                   final double rawProgress = (monthlyLimit > 0) ? (totalExpenses / monthlyLimit) : 0.0;
+                                   final double progress = rawProgress.clamp(0.0, 1.0);
+                                   final bool isOverLimit = rawProgress > 1.0;
+
+                                   return Stack(
+                                     children: [
+                                       Container(color: Colors.grey.withOpacity(0.2)), 
+                                       FractionallySizedBox(
+                                         widthFactor: progress,
+                                         child: Container(
+                                           decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: isOverLimit 
+                                                  ? [Color(0xFFFF512F), Color(0xFFDD2476)] 
+                                                  : [Color(0xFFEC4899), Color(0xFF8B5CF6)], 
+                                              ),
+                                           ),
+                                         ),
+                                       ),
+                                     ],
+                                   );
+                                 },
+                               ),
+                             ),
+                           ),
+                           SizedBox(height: 12),
+                           Builder(
+                             builder: (context) {
+                               final bool isOverLimit = totalExpenses > monthlyLimit;
+                               final double overage = (totalExpenses - monthlyLimit).abs();
+                               
+                               return Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                 children: [
+                                   Text(
+                                     "₹${totalExpenses.toStringAsFixed(0)} spent out of ₹${monthlyLimit.toStringAsFixed(0)}",
+                                     style: GoogleFonts.plusJakartaSans(
+                                       fontSize: 12,
+                                       fontWeight: FontWeight.w600,
+                                       color: CoreTheme.deepInk.withOpacity(0.8),
+                                     ),
                                    ),
-                                 ),
-                                 Text(
-                                   isOverLimit 
-                                      ? "Overspent: ₹${overage.toStringAsFixed(0)}" 
-                                      : "₹${remainingAmount.toStringAsFixed(0)} left",
-                                   style: GoogleFonts.plusJakartaSans(
-                                     fontSize: 10,
-                                     fontWeight: isOverLimit ? FontWeight.w700 : FontWeight.w300, // Bold if overspent
-                                     color: isOverLimit ? Colors.redAccent : CoreTheme.deepInk.withValues(alpha: 0.6), // Red if overspent
+                                   Text(
+                                     isOverLimit 
+                                        ? "Overspent: ₹${overage.toStringAsFixed(0)}" 
+                                        : "₹${remainingAmount.toStringAsFixed(0)} left",
+                                     style: GoogleFonts.plusJakartaSans(
+                                       fontSize: 12,
+                                       fontWeight: FontWeight.w700,
+                                       color: isOverLimit ? Colors.redAccent : Color(0xFF8B5CF6),
+                                     ),
                                    ),
-                                 ),
-                               ],
-                             );
-                           }
-                         ),
-                       ],
+                                 ],
+                               );
+                             }
+                           ),
+                           SizedBox(height: 16),
+                           if (daysLeft > 0 && remainingAmount > 0)
+                             Container(
+                               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                               decoration: BoxDecoration(
+                                 color: Colors.white.withOpacity(0.6),
+                                 borderRadius: BorderRadius.circular(16),
+                               ),
+                               child: Row(
+                                 children: [
+                                   Icon(Icons.insights_rounded, color: Color(0xFFEC4899), size: 18),
+                                   SizedBox(width: 12),
+                                   Expanded(
+                                     child: Text(
+                                       "Try to stay under ₹${dailyRequired.toStringAsFixed(0)} per day to meet your goal.",
+                                       style: GoogleFonts.plusJakartaSans(
+                                         fontSize: 12,
+                                         fontWeight: FontWeight.w500,
+                                         color: CoreTheme.deepInk.withOpacity(0.8),
+                                       ),
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ),
+                         ],
+                       ),
                      ),
                   ),
                 ),
 
                 SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-                // SECTION: Insights System (Premium Glass Card)
+                
 
 
-                // SECTION: Financial Hero (Budget + Net Flow)day Header (Strict Mandate)
+                
                 SliverPadding(
                    padding: EdgeInsets.symmetric(horizontal: 24),
                    sliver: SliverToBoxAdapter(
@@ -881,7 +902,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                                 "Total Spent: ₹${totalSpentToday.abs().toStringAsFixed(2)}", 
                                 style: GoogleFonts.plusJakartaSans( 
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w600, // Mandate: w600
+                                  fontWeight: FontWeight.w600, 
                                   color: Color(0xFF1A1A1A),
                                   letterSpacing: -0.5,
                                 ),
@@ -917,9 +938,9 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                                ),
                            ],
                          ),
-                         SizedBox(height: 16), // Mandate: Exactly 16 spacing
+                         SizedBox(height: 16), 
                          
-                          // Today Pill with Violet Line inline
+                          
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
@@ -943,16 +964,15 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 12), // Spacing between pill and line
-                                // MANDATE: Thin Violet Line (1.5px divider inline with TODAY)
+                                SizedBox(width: 12), 
                                 Expanded(
                                   child: Container(
-                                    height: 1.5, // Mandate: 1.5px height
+                                    height: 1.5, 
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Color(0xFF8B5CF6).withOpacity(0.5), // Mandate: 0.5 opacity
-                                          Color(0xFFD946EF).withOpacity(0.5), // Mandate: 0.5 opacity
+                                          Color(0xFF8B5CF6).withOpacity(0.5), 
+                                          Color(0xFFD946EF).withOpacity(0.5), 
                                         ],
                                       ),
                                     ),
@@ -961,7 +981,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 12), // Mandate: 12px spacing to first entry
+                          SizedBox(height: 12), 
                        ],
                      ),
                    ),
@@ -993,7 +1013,7 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
                           final entry = viewDateEntries[index];
 
                           return Padding(
-                            padding: EdgeInsets.only(bottom: 20), // Mandate: 20px gap for "Air-Glass" breathability
+                            padding: EdgeInsets.only(bottom: 20), 
                             child: _ElevatedEntryCard(
                               entry: entry,
                               onTap: () async {
@@ -1035,23 +1055,23 @@ class _DailyStreamScreenState extends State<DailyStreamScreen> {
   IconData _getCategoryIcon(String context) {
     switch (context.toLowerCase()) {
       case 'travel':
-        return Icons.flight_takeoff_outlined; // Travel
+        return Icons.flight_takeoff_outlined; 
       case 'food/cafe':
       case 'food':
       case 'cafe':
-        return Icons.local_cafe_outlined; // Cafe
+        return Icons.local_cafe_outlined; 
       case 'social':
-        return Icons.people_outline_rounded; // Social
+        return Icons.people_outline_rounded; 
       case 'work':
-        return Icons.work_outline_rounded; // Work
+        return Icons.work_outline_rounded; 
       case 'shopping':
-        return Icons.shopping_bag_outlined; // Shopping
+        return Icons.shopping_bag_outlined; 
       case 'home':
-        return Icons.home_outlined; // Home
+        return Icons.home_outlined; 
       case 'impulsive':
-        return Icons.bolt_rounded; // Impulsive
+        return Icons.bolt_rounded; 
       default:
-        return Icons.receipt_long_outlined; // Default
+        return Icons.receipt_long_outlined; 
     }
   }
 }
@@ -1079,12 +1099,12 @@ class _ElevatedEntryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: 16, // Mandate: Reduced by another 10% (18 -> 16)
-                backgroundColor: Colors.grey.withOpacity(0.08), // Soft-grey glass circle
+                radius: 16, 
+                backgroundColor: Colors.grey.withOpacity(0.08), 
                 child: Icon(
                   getIcon(entry.context),
                   color: Colors.black.withOpacity(0.7),
-                  size: 18, // Mandate: Reduced by another 10% (20 -> 18)
+                  size: 18, 
                 ),
               ),
               SizedBox(width: 16),
@@ -1102,13 +1122,13 @@ class _ElevatedEntryCard extends StatelessWidget {
                         color: Color(0xFF1A1A1A),
                       ),
                     ),
-                    SizedBox(height: 6), // Added breathability
+                    SizedBox(height: 6), 
                       Text(
-                        // Logic: Keep default spacing even if empty
+                        
                         () {
                           final time = DateFormat('h:mm a').format(entry.timestamp);
-                          final mood = entry.mood.isEmpty ? "     " : entry.mood; // 5 spaces for empty
-                          final context = entry.context.isEmpty ? "     " : entry.context; // 5 spaces for empty
+                          final mood = entry.mood.isEmpty ? "     " : entry.mood; 
+                          final context = entry.context.isEmpty ? "     " : entry.context; 
                           return "$time   •   $mood   •   $context";
                         }(),
                         style: GoogleFonts.plusJakartaSans(
@@ -1125,18 +1145,18 @@ class _ElevatedEntryCard extends StatelessWidget {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1A1A), // Mandate: Strictly #1A1A1A
+                  color: Color(0xFF1A1A1A), 
                 ),
               ),
             ],
           ),
-        ), // End InkWell
-        SizedBox(height: 20), // Mandate: 20px spacing between tiles for breathability
+        ), 
+        SizedBox(height: 20), 
       ],
     );
   }
 }
-// End of _ElevatedEntryCard
+
 
 
 class _MetricCard extends StatelessWidget {
@@ -1156,73 +1176,73 @@ class _MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mandate: Appearance Mode Logic
+    
     final appearance = SettingsService().appearanceMode.value;
     final isSoft = appearance == AppearanceMode.soft;
 
     return Container(
-      padding: EdgeInsets.all(20), // Mandate: 20px padding
+      padding: EdgeInsets.all(20), 
       decoration: BoxDecoration(
         color: isSoft ? Colors.white.withOpacity(0.4) : Colors.white.withOpacity(0.95),
         borderRadius: BorderRadius.circular(isSoft ? 24 : 8),
         border: Border.all(
-          // Mandate: Gradient Border (subtle glow)
+          
           color: iconColor.withOpacity(0.3),
           width: 0.5,
         ),
         boxShadow: [
-          // Mandate: JEWELRY GLOW - Large blur (30.0) with low opacity (0.05)
+          
           BoxShadow(
             color: iconColor.withOpacity(0.05),
-            blurRadius: 30.0, // Mandate: 30.0 for floating effect
+            blurRadius: 30.0, 
             offset: Offset(0, 8),
           ),
         ],
       ),
       child: Stack(
         children: [
-          // GHOST ICON - Top-right corner with opacity 0.3
+          
           Positioned(
             top: 0,
             right: 0,
             child: Icon(
               icon,
-              size: 20, // Mandate: 20px icon
-              color: iconColor.withOpacity(0.9), // Mandate: 0.9 opacity for visibility
+              size: 20, 
+              color: iconColor.withOpacity(0.9), 
             ),
           ),
-          // Content
+          
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // LABEL
+              
               Text(
                 label,
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12, // Mandate: 12
-                  fontWeight: FontWeight.w300, // Mandate: w300
+                  fontSize: 12, 
+                  fontWeight: FontWeight.w300, 
                   color: Color(0xFF1A1A1A).withValues(alpha: 0.7),
                 ),
               ),
               SizedBox(height: 4),
-              // VALUE - Increased to 24px
+              
               Text(
                 value,
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 24, // Mandate: 24px (increased from 22)
-                  fontWeight: FontWeight.w700, // Mandate: w700
+                  fontSize: 24, 
+                  fontWeight: FontWeight.w700, 
                   color: Color(0xFF1A1A1A),
                   letterSpacing: -0.5,
                 ),
               ),
               SizedBox(height: 2),
-              // SUBTITLE - Lighter w300
+              
               Text(
                 subtitle,
-                style: GoogleFonts.plusJakartaSans( // Mandate: Use GoogleFonts
+                style: GoogleFonts.plusJakartaSans( 
                    fontSize: 10,
                    color: Color(0xFF1A1A1A).withOpacity(0.5),
-                   fontWeight: FontWeight.w300, // Mandate: w300
+                   fontWeight: FontWeight.w300, 
                  ),
               ),
             ],

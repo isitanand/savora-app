@@ -3,8 +3,8 @@ class ReflectionEntry {
   final double amount;
   final String currencyCode;
   final DateTime timestamp;
-  final String mood; // "Tired", "Stressed", "Calm", etc.
-  final String context; // "Home", "Work", "Cafe", etc.
+  final String mood; 
+  final String context; 
   final String note;
   final String? personName;
   final bool isSettled;

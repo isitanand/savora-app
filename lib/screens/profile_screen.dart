@@ -23,7 +23,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
 
-  // --- ACTIONS ---
+  
 
   Future<void> _editName() async {
     final TextEditingController controller = TextEditingController(text: SettingsService().userName.value);
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 border: Border.all(color: Colors.white.withOpacity(0.5), width: 1.5),
                 boxShadow: [
                   BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 40, offset: Offset(0, 20)),
-                  BoxShadow(color: Colors.white.withOpacity(0.8), blurRadius: 0, offset: Offset(0, -1), spreadRadius: 0), // White Lip Top
+                  BoxShadow(color: Colors.white.withOpacity(0.8), blurRadius: 0, offset: Offset(0, -1), spreadRadius: 0), 
                 ],
               ),
               child: Column(
@@ -68,14 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 32),
                   
-                  // 3D Tactile Input
+                  
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: Offset(0, 4)),
-                        BoxShadow(color: Colors.white, blurRadius: 1, offset: Offset(0, -1), spreadRadius: 1), // Top Lip
+                        BoxShadow(color: Colors.white, blurRadius: 1, offset: Offset(0, -1), spreadRadius: 1), 
                       ],
                     ),
                     child: TextField(
@@ -130,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   blurRadius: 12,
                                   offset: Offset(0, 6),
                                 ),
-                                BoxShadow(color: Colors.white.withOpacity(0.3), blurRadius: 0, offset: Offset(0, -2), spreadRadius: 0), // Button top lip
+                                BoxShadow(color: Colors.white.withOpacity(0.3), blurRadius: 0, offset: Offset(0, -2), spreadRadius: 0), 
                               ],
                             ),
                             child: Center(
@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
-        // 1. CROP IMAGE
+        
         final croppedFile = await ImageCropper().cropImage(
           sourcePath: image.path,
           uiSettings: [
@@ -202,41 +202,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final limit = SettingsService().monthlyLimit.value;
       final imagePath = SettingsService().profileImagePath.value;
 
-      // SHOW PREMIUM LOADING DIALOG
+      
       showDialog(
         context: context,
         barrierDismissible: false,
-        barrierColor: Colors.black.withOpacity(0.2), // Darker tint for contrast
+        barrierColor: Colors.black.withOpacity(0.2), 
         builder: (context) {
           return Stack(
             children: [
-               // 1. FULL SCREEN BLUR
+               
                Positioned.fill(
                  child: BackdropFilter(
-                   filter: ui.ImageFilter.blur(sigmaX: 15, sigmaY: 15), // Strong blur
+                   filter: ui.ImageFilter.blur(sigmaX: 15, sigmaY: 15), 
                    child: Container(color: Colors.transparent),
                  ),
                ),
-               // 2. 3D GLASS CARD
+               
                Center(
-                 child: Material( // Essential for Text widget inheritance
+                 child: Material( 
                    color: Colors.transparent,
                    child: Container(
                      margin: const EdgeInsets.symmetric(horizontal: 40),
                      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                      decoration: BoxDecoration(
-                       color: Colors.white.withOpacity(0.9), // High opacity for cleanness
+                       color: Colors.white.withOpacity(0.9), 
                        borderRadius: BorderRadius.circular(32),
-                       border: Border.all(color: Colors.white, width: 2), // 3D White Lip
+                       border: Border.all(color: Colors.white, width: 2), 
                        boxShadow: [
-                         // Deep Purple Glow
                          BoxShadow(
                            color: const Color(0xFF8B5CF6).withOpacity(0.3),
                            blurRadius: 40,
                            spreadRadius: -5,
                            offset: const Offset(0, 20),
                          ),
-                         // Tactile Shadow
                          BoxShadow(
                            color: Colors.black.withOpacity(0.1),
                            blurRadius: 15,
@@ -247,7 +245,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                      child: Column(
                        mainAxisSize: MainAxisSize.min,
                        children: [
-                         // Custom Spinner Container
                          Container(
                            padding: const EdgeInsets.all(16),
                            decoration: BoxDecoration(
@@ -257,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                BoxShadow(
                                  color: Colors.black.withOpacity(0.05),
                                  blurRadius: 10,
-                                 offset: const Offset(0, 4), // Inner depth feel
+                                 offset: const Offset(0, 4), 
                                  spreadRadius: -2,
                                ),
                              ],
@@ -266,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              height: 32, 
                              width: 32,
                              child: CircularProgressIndicator(
-                               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8B5CF6)), // Violet
+                               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8B5CF6)), 
                                strokeWidth: 3,
                                backgroundColor: Colors.transparent,
                              ),
@@ -301,15 +298,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       );
 
-      // PERFORM EXPORT
+      
       await ReportService().generateAndShare(entries, userName, limit, imagePath);
 
-      // DISMISS LOADING
+      
       if (mounted) {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      // Dismiss if error occurs
+      
       if (mounted) Navigator.of(context).pop();
       
       debugPrint("Export Error: $e");
@@ -320,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _deleteData() async {
-    // 1. First Warning
+    
     final bool? firstConfirm = await showDialog<bool>(
       context: context,
       builder: (context) => _buildGlassDialog(
@@ -334,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (firstConfirm != true) return;
 
-    // 2. Second Warning (Double Confirm)
+    
     final bool? secondConfirm = await showDialog<bool>(
       context: context,
       builder: (context) => _buildGlassDialog(
@@ -487,7 +484,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // --- SECURITY ---
+  
   
   final LocalAuthentication auth = LocalAuthentication();
 
@@ -521,11 +518,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // --- BUILD ---
+  
 
   @override
   Widget build(BuildContext context) {
-    // Listen to all settings to rebuild profile UI
+    
     return AnimatedBuilder(
       animation: Listenable.merge([
         SettingsService().appearanceMode,
@@ -545,7 +542,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: BackdropFilter(
               filter: ui.ImageFilter.blur(sigmaX: 16, sigmaY: 16),
               child: Container(
-                color: Colors.transparent, // Mandate: Transparent header to show gradient
+                color: Colors.transparent, 
                 child: AppBar(
                   title: Text("Profile", style: GoogleFonts.plusJakartaSans(color: Color(0xFF1A1A1A), fontWeight: FontWeight.w700)),
                   backgroundColor: Colors.transparent,
@@ -562,10 +559,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         body: Stack(
           children: [
-            // 1. LIGHT BASE (Standard)
+            
             Container(color: Color(0xFFFDFCFE)),
 
-            // 2. ATMOSPHERIC ORBS (Lavender, Pink, Cyan)
+            
             Positioned(
               top: -100,
               left: -50,
@@ -603,7 +600,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            // 3. GLOBAL ATMOSPHERIC BLUR
+            
             Positioned.fill(
               child: BackdropFilter(
                 filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
@@ -613,7 +610,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            // 4. CONTENT
+            
             SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.fromLTRB(24, 100, 24, 40),
@@ -629,7 +626,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   _buildSectionLabel("PREFERENCES"),
                   SizedBox(height: 12),
-                  // 1. Insights Toggle
+                  
                   _buildGlassCard(
                      child: _buildSwitchRow(
                        "Behavioral Insights", 
@@ -640,14 +637,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 12),
                   
-                  // 1. Biometric Security (Migrated from System Hub)
+                  
                   ValueListenableBuilder<bool>(
                     valueListenable: SettingsService().biometricEnabled,
                     builder: (context, enabled, _) {
                       return _buildGlassCard(
                         child: _buildSwitchRow(
                           "Biometric Lock", 
-                          "Secure app on launch", // Refined description
+                          "Secure app on launch", 
                           enabled, 
                           (v) => _toggleBiometrics(v)
                         )
@@ -656,7 +653,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 12),
 
-                  // 2. Insight Tone
+                  
                   _buildGlassCard(
                      child: _buildActionRow("Insight Tone", Icons.tune_rounded, 
                             trailingText: SettingsService().insightTone.value,
@@ -664,13 +661,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 12),
 
-                  // 3. Currency
+                  
                   _buildGlassCard(
                      child: _buildOptionRow("Currency", SettingsService().currency.value, ["₹", "\$", "€", "£"], (v) => SettingsService().setCurrency(v))
                   ),
                   SizedBox(height: 12),
                   
-                  // 4. Monthly Goal
+                  
                   _buildGlassCard(
                      child: ValueListenableBuilder<double>(
                        valueListenable: SettingsService().monthlyLimit,
@@ -716,7 +713,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             valueListenable: SettingsService().appearanceMode,
             builder: (context, mode, _) {
               final isSharp = mode == AppearanceMode.sharp;
-              final double radius = isSharp ? 0.0 : 64.0; // 0 for Square, 64 for Circle
+              final double radius = isSharp ? 0.0 : 64.0; 
               
               return GestureDetector(
                 onTap: _pickImage,
@@ -725,17 +722,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 128,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(radius), // Sharp or Round
+                    borderRadius: BorderRadius.circular(radius), 
                     border: Border.all(color: Colors.white, width: 4),
                     boxShadow: [
                       BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: Offset(0, 10)),
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(radius), // Sharp or Round
+                    borderRadius: BorderRadius.circular(radius), 
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFE1BEE7).withOpacity(0.3), // Fallback color
+                        color: Color(0xFFE1BEE7).withOpacity(0.3), 
                         image: imagePath != null 
                           ? DecorationImage(
                               image: FileImage(File(imagePath)), 
@@ -840,7 +837,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildAppearanceToggle(AppearanceMode currentMode) {
-    // 0: Soft, 1: Sharp
+    
     final bool isSharp = currentMode == AppearanceMode.sharp;
     final double radius = isSharp ? 0.0 : 16.0;
     
@@ -852,7 +849,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Stack(
         children: [
-          // Sliding Indicator
+          
           AnimatedAlign(
             alignment: isSharp ? Alignment.centerRight : Alignment.centerLeft,
             duration: Duration(milliseconds: 300),
@@ -873,7 +870,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           
-          // Text Labels
+          
           Row(
             children: [
               Expanded(
@@ -1036,7 +1033,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildOptionRow(String label, String value, List<String> options, ValueChanged<String> onChanged) {
      return InkWell(
-       onTap: _showCurrencySelector, // Trigger the new sheet
+       onTap: _showCurrencySelector, 
        child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
@@ -1057,15 +1054,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   
   Widget _buildSliderRow(BuildContext context, String label, double value, ValueChanged<double> onChanged) {
-    // Treat any value > 50k as 50k for slider position purposes
+    
     final sliderValue = value > 50000 ? 50000.0 : value;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16), // Reduced padding to increase width
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16), 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding( // Keep label and value aligned with other items
+          Padding( 
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1105,9 +1102,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               max: 50000, 
               divisions: 98, 
               onChanged: (val) {
-                // Haptic Logic: Only trigger if the value has actually changed enough (based on division step)
+                
                 if (val != sliderValue) {
-                   HapticFeedback.selectionClick(); // Use selectionClick for slider ticks
+                   HapticFeedback.selectionClick(); 
                    onChanged(val);
                 }
               },
@@ -1162,7 +1159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Tiny Logo
+            
             Container(
               width: 24, 
               height: 24, 
@@ -1174,39 +1171,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            SizedBox(width: 10), // Increased spacing
+            SizedBox(width: 10), 
             Text(
               "Savora",
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 20, // Increased
+                fontSize: 20, 
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF1A1A1A).withOpacity(0.6), // Slightly darker
+                color: Color(0xFF1A1A1A).withOpacity(0.6), 
                 letterSpacing: -0.5,
               ),
             ),
           ],
         ),
-        SizedBox(height: 8), // Increased
+        SizedBox(height: 8), 
         Text(
           "Private • Local • v1.2.0",
            style: GoogleFonts.plusJakartaSans(
-             fontSize: 11, // Increased
+             fontSize: 11, 
              fontWeight: FontWeight.w600,
              color: Color(0xFF1A1A1A).withOpacity(0.3), 
              letterSpacing: 0.5,
            ),
         ),
-        SizedBox(height: 12), // Increased spacing before credit
+        SizedBox(height: 12), 
         Text(
           "Crafted by Anand Choubey",
-          style: GoogleFonts.plusJakartaSans( // Switched to specific font
-            fontSize: 13, // Increased from 10
-            color: Color(0xFF9C27B0), // Exact match to Slider/Toggle Purple
-            fontWeight: FontWeight.w700, // Bolder
+          style: GoogleFonts.plusJakartaSans( 
+            fontSize: 13, 
+            color: Color(0xFF9C27B0), 
+            fontWeight: FontWeight.w700, 
             letterSpacing: 0.5,
           ),
         ),
-        SizedBox(height: 32), // More bottom padding
+        SizedBox(height: 32), 
       ],
     );
   }
