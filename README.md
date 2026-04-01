@@ -16,7 +16,7 @@
 
 ### 📱 Download APK
 
-👉 [**Download Savora v1.2.0 (Android APK)**](https://github.com/isitanand/savora-app/releases/download/v1.2.0/Savora-v1.3.release.apk)
+👉 [**Download Savora v1.3.0 (Android APK)**](https://github.com/isitanand/savora-app/releases/download/v1.2.0/Savora-v1.3.release.apk)
 
 *Install directly on Android devices. No accounts, no backends—your financial data stays 100% local and private.*
 
