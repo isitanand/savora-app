@@ -5,14 +5,17 @@
 ---
 
 ### 🧠 What Savora Does
+
 * **Emotional Mapping**: Locks your current mood (e.g., Stressed, Calm, Anxious) to every financial event to uncover psychological spending drivers.
-* **Behavioral Insights**: AI-powered pattern analysis that adapts its communication style to your preference—Supportive, Analytical, or Neutral.
-* **Visual Velocity**: Tracks the "speed" of your spending through high-fidelity curve visualizations and net flow metrics.
-* **The Forge**: A gamified growth center that monitors your progress in Discipline, Consistency, and Awareness.
+* **Adaptive Behavioral Insights**: AI-powered pattern analysis that adapts its communication style—Supportive, Analytical, or Neutral.
+* **Visual Velocity**: Tracks the "speed" of your spending through monthly and swipeable weekly visualizations.
+* **Savings Goal System**: Monitor monthly spending against a defined goal with dynamic daily pacing guidance.
+* **The Forge**: A gamified system tracking Discipline, Consistency, and Awareness.
 
 ---
 
 ### 📱 Download APK
+
 👉 [**Download Savora v1.2.0 (Android APK)**](https://github.com/isitanand/savora-app/releases)
 
 *Install directly on Android devices. No accounts, no backends—your financial data stays 100% local and private.*
@@ -20,28 +23,44 @@
 ---
 
 ### ✨ Key Features
-* **Daily Ledger**: A streamlined view of recent transactions integrated with mood and category icons.
-* **Visual Trace**: Detailed deep-dives into single transactions, featuring "The Reflection" for captured thoughts.
-* **The Vault & Favors**: Specialized workspaces for long-term historical records and social ledger tracking.
-* **Biometric Security**: Secure app access on launch using native device biometric authentication.
+
+* **Insight-First Dashboard**: Contextual AI insights placed directly within the financial flow.
+* **Daily Ledger**: Clean transaction stream with mood, category, and contextual tagging.
+* **Visual Trace**: Deep-dive into individual transactions with reflection support.
+* **The Vault & Favors**: Structured tracking for categorized spending and social balances.
+* **Biometric Security**: Secure app access using native device authentication.
 
 ---
 
 ### 🛠️ Architecture & Tech
-Built with **Flutter**, ensuring a high-performance native feel and cross-platform stability.
 
-* **UI Design**: Premium "Soft-Glass" aesthetic utilizing BackdropFilters (Sigma 25.0) and custom LinearGradients.
-* **Data Layer**: Repository Pattern (RepositoryInterface -> LocalFileRepository) for clean data management.
-* **Persistence**: JSON-based local storage within the application's document directory—no cloud tracking.
+Built with **Flutter** for a high-performance native experience.
+
+* **UI Design**: Premium "Soft-Glass" aesthetic using BackdropFilters and gradients.
+* **Architecture**: Clean separation using Repository Pattern.
+* **Persistence**: Local JSON storage (fully offline, no backend).
 
 ---
 
 ### 🔒 Privacy
-* **No Forced Accounts**: Use the app immediately without signing up.
-* **On-Device Data**: Every byte of your financial information remains on your phone.
-* **Data Sovereignty**: Full access to export or delete all stored data with a single tap.
+
+* **No Accounts Required**
+* **100% On-Device Storage**
+* **Full Data Ownership (Export / Delete anytime)**
+
+---
+
+### ⚙️ Run Locally
+
+```bash
+git clone https://github.com/isitanand/savora-app.git
+cd savora-app
+flutter pub get
+flutter run
+```
 
 ---
 
 ### 👤 Author
+
 **Anand Choubey**
