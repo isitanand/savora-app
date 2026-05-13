@@ -29,13 +29,11 @@ Manage financial intent with emotional clarity
 ## ✨ Interface Preview
 
 <p align="center">
-  <img src="assets/images/screen_dashboard.jpg" width="13.5%" />
-  <img src="assets/images/screen_ledger.jpg" width="13.5%" />
-  <img src="assets/images/screen_velocity.jpg" width="13.5%" />
-  <img src="assets/images/screen_forge.jpg" width="13.5%" />
-  <img src="assets/images/screen_mood.jpg" width="13.5%" />
-  <img src="assets/images/screen_analytics.png" width="13.5%" />
-  <img src="assets/images/screen_backup.jpg" width="13.5%" />
+  <img src="assets/images/screen_dashboard.jpg" width="19%" />
+  <img src="assets/images/screen_ledger.jpg" width="19%" />
+  <img src="assets/images/screen_velocity.jpg" width="19%" />
+  <img src="assets/images/screen_forge.jpg" width="19%" />
+  <img src="assets/images/screen_mood.jpg" width="19%" />
 </p>
 
 <p align="center">
