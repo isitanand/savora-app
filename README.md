@@ -31,15 +31,15 @@ Manage financial intent with emotional clarity
 <p align="center">
   <img src="assets/images/screen_dashboard.jpg" width="13.5%" />
   <img src="assets/images/screen_ledger.jpg" width="13.5%" />
-  <img src="assets/images/screen_analytics.png" width="13.5%" />
   <img src="assets/images/screen_velocity.jpg" width="13.5%" />
   <img src="assets/images/screen_forge.jpg" width="13.5%" />
-  <img src="assets/images/screen_backup.jpg" width="13.5%" />
   <img src="assets/images/screen_mood.jpg" width="13.5%" />
+  <img src="assets/images/screen_analytics.png" width="13.5%" />
+  <img src="assets/images/screen_backup.jpg" width="13.5%" />
 </p>
 
 <p align="center">
-  👉 <b><a href="https://youtube.com/shorts/7w4-r_4OiTM">View Video Demo</a></b>
+  👉 <b>To view the demo, open the video here: <a href="https://youtube.com/shorts/7w4-r_4OiTM?feature=share">View Video Demo</a></b>
 </p>
 
 ---
