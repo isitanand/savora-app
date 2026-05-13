@@ -1,6 +1,18 @@
 # Savora 💎
 
+<p align="center">
+  <img src="./assets/images/logo.png" width="120" />
+</p>
+
 **Savora** is a premium, local-first financial workspace designed to bridge the gap between raw capital and emotional intent. It transforms financial tracking into a focused moment of self-awareness, replacing mindless logging with intentional reflection.
+
+---
+
+## 🎬 Experience Savora
+
+<p align="center">
+  <video src="./assets/images/hero_demo.mp4" width="100%" controls autoplay loop muted></video>
+</p>
 
 ---
 
@@ -11,6 +23,17 @@
 * **Visual Velocity**: Tracks the "speed" of your spending through monthly and swipeable weekly visualizations.
 * **Savings Goal System**: Monitor monthly spending against a defined goal with dynamic daily pacing guidance.
 * **The Forge**: A gamified system tracking Discipline, Consistency, and Awareness.
+
+---
+
+## ✨ Interface Preview
+
+<p align="center">
+  <img src="./assets/images/screen_ledger.jpg" width="24%" />
+  <img src="./assets/images/screen_mood.jpg" width="24%" />
+  <img src="./assets/images/screen_velocity.jpg" width="24%" />
+  <img src="./assets/images/screen_forge.jpg" width="24%" />
+</p>
 
 ---
 
