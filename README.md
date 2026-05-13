@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://youtube.com/shorts/7w4-r_4OiTM">
-    <img src="https://img.youtube.com/vi/7w4-r_4OiTM/maxresdefault.jpg" alt="Watch Savora Demo" width="100%">
+    <img src="https://img.youtube.com/vi/7w4-r_4OiTM/hqdefault.jpg" alt="Watch Savora Demo" width="100%">
   </a>
 </p>
 
