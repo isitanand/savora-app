@@ -1,8 +1,6 @@
 # Savora 💎
 
-<p align="center">
-  <video src="https://github.com/isitanand/savora-app/raw/main/assets/images/hero_demo.mp4" width="100%" controls autoplay loop muted></video>
-</p>
+https://github.com/isitanand/savora-app/raw/main/assets/images/hero_demo.mp4
 
 **Savora** is a premium, local-first financial workspace designed to bridge the gap between raw capital and emotional intent. It transforms financial tracking into a focused moment of self-awareness, replacing mindless logging with intentional reflection.
 
