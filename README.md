@@ -1,16 +1,28 @@
 # Savora 💎
-
-**Savora** is a premium, local-first financial workspace designed to bridge the gap between raw capital and emotional intent. It transforms financial tracking into a focused moment of self-awareness, replacing mindless logging with intentional reflection.
+Manage financial intent with emotional clarity
 
 ---
 
-### 🧠 What Savora Does
+## 📋 Project Brief
 
-* **Emotional Mapping**: Locks your current mood (e.g., Stressed, Calm, Anxious) to every financial event to uncover psychological spending drivers.
-* **Adaptive Behavioral Insights**: AI-powered pattern analysis that adapts its communication style—Supportive, Analytical, or Neutral.
-* **Visual Velocity**: Tracks the "speed" of your spending through monthly and swipeable weekly visualizations.
-* **Savings Goal System**: Monitor monthly spending against a defined goal with dynamic daily pacing guidance.
-* **The Forge**: A gamified system tracking Discipline, Consistency, and Awareness.
+| **PROBLEM** | **SOLUTION** |
+| :--- | :--- |
+| Mindless financial tracking ignores the psychological drivers of spending. There's no simple way to see the connection between raw capital and your emotional intent. | A premium design system that locks your current mood to every transaction. It surfaces behavioral patterns, tracks "visual velocity," and gamifies awareness—built with local-first privacy at its core. |
+
+### ✨ Key Features
+
+*   **Emotional Mapping**: Locks mood, energy, and stress levels to every financial event.
+*   **Adaptive Behavioral Insights**: AI-powered pattern analysis with selectable communication tones.
+*   **Visual Velocity**: Dynamic monthly and swipeable weekly traces of your spending speed.
+*   **The Forge**: A gamified tracking system for Discipline, Consistency, and Awareness.
+*   **Local-First Architecture**: 100% on-device JSON storage—no accounts, no trackers.
+*   **Biometric Security**: Native device-level authentication to secure your workspace.
+
+### 🛠 Tech Stack
+`Flutter` `Local JSON` `AI Pattern Analysis` `Biometrics`
+
+### 🔗 Quick Links
+[**Download APK**](https://github.com/isitanand/savora-app/releases/download/v1.2.0/Savora-v1.3.release.apk) | [**View Demo**](https://youtube.com/shorts/7w4-r_4OiTM)
 
 ---
 
@@ -37,16 +49,6 @@
 👉 [**Download Savora v1.3.0 (Android APK)**](https://github.com/isitanand/savora-app/releases/download/v1.2.0/Savora-v1.3.release.apk)
 
 *Install directly on Android devices. No accounts, no backends—your financial data stays 100% local and private.*
-
----
-
-### ✨ Key Features
-
-* **Insight-First Dashboard**: Contextual AI insights placed directly within the financial flow.
-* **Daily Ledger**: Clean transaction stream with mood, category, and contextual tagging.
-* **Visual Trace**: Deep-dive into individual transactions with reflection support.
-* **The Vault & Favors**: Structured tracking for categorized spending and social balances.
-* **Biometric Security**: Secure app access using native device authentication.
 
 ---
 
