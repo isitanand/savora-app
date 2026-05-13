@@ -1,18 +1,10 @@
 # Savora 💎
 
 <p align="center">
-  <img src="./assets/images/logo.png" width="120" />
+  <video src="./assets/images/hero_demo.mp4" width="100%" controls autoplay loop muted></video>
 </p>
 
 **Savora** is a premium, local-first financial workspace designed to bridge the gap between raw capital and emotional intent. It transforms financial tracking into a focused moment of self-awareness, replacing mindless logging with intentional reflection.
-
----
-
-## 🎬 Experience Savora
-
-<p align="center">
-  <video src="./assets/images/hero_demo.mp4" width="100%" controls autoplay loop muted></video>
-</p>
 
 ---
 
